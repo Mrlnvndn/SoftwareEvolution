@@ -12,11 +12,17 @@ loc projectLocation1 = |cwd:///../smallsql0.21_src/smallsql0.21_src/|;
 loc projectLocation2 = |cwd:///../hsqldb-2.3.1/hsqldb-2.3.1/|;
 loc testProjectLocation = |cwd:///../java-test/|;
 
-void main(int testArgument=0) {
+void main(int testArgument = 0) {
     //println(manYears(linesOfCode(getASTs(testProjectLocation))));
     //println(manYears(linesOfCode(getASTs(testProjectLocation))));
     //println(unitSize(getUnits(getASTs(testProjectLocation))));
-    println(codeDuplication(getASTs(testProjectLocation)));
+    int cd1 = codeDuplication3(getASTs(projectLocation2));
+    int loc1 = linesOfCode(getASTs(projectLocation2));
+    // int cd2 = codeDuplication2(getASTs(projectLocation2));
+    // int loc2 = linesOfCode(getASTs(projectLocation2));
+    println("cd1:<cd1>, loc1:<loc1>, percentag:<(cd1*100)/loc1>");
+    // println("cd2:<cd2>, loc2:<loc2>, percentage:<(cd2/loc2)*100>");
+    //println(codeDuplication2(getASTs(testProjectLocation)));
 }
 
 list[Declaration] getASTs(loc projectLocation) {
@@ -63,8 +69,8 @@ int linesOfCode(list[Declaration] asts) {
     return totalLines;
 }
 
+//get total lines of code of a declaration. This can be anything ranging from a class to a function
 int getLinesOfCode(Declaration decl) {
-    //first, read the code from the sourceCode
     str sourceCode = readFile(decl.src);
     list[str] lines = split("\n", sourceCode);
     list[str] codeLines = [line | line <- lines, !isWhitespaceOrComment(line)];
@@ -80,10 +86,31 @@ bool isWhitespace(str line){
     return line == "";
 }
 
+//we are aware that this is leaving out certain forms of comment, for example inline comments (person./*blabla*/name) and comments at the end o a line (person.name //blabla)
 bool isComment(str line){
     return startsWith(line, "//") || startsWith(line, "/*") || startsWith(line, "*") || startsWith(line, "*/");
 }
 
+list[int] lineLength(list[Declaration] asts){
+    list[int] lineLength = [];
+    for(Declaration decl <- asts){
+        lineLength += [getAverageLineLength(decl)];
+    }
+    return lineLength;
+}
+
+real getAverageLineLength(Declaration decl){
+    real totalLines = 0.0;
+    real totalLength = 0.0;
+    str sourceCode = readFile(decl.src);
+    list[str] lines = split("\n", sourceCode);
+    list[str] codeLines = [line | line <- lines, !isWhitespaceOrComment(line)];
+    for(str codeLine <- codeLines){
+        totalLines += 1;
+        totalLength += size(codeLine);
+    }
+    return (totalLength / totalLines);
+}
 
 list[Declaration] getUnits(list[Declaration] asts){
     list[Declaration] units = [];
@@ -152,15 +179,12 @@ list[int] unitComplexity(list[Declaration] units){
 
 //The degree of sourcecode duplication (also called code cloning) influences analysability and change ability
 
-
 //Go through the code using blocks of length 6. If a block has been seen before, mark the lines as duplicate and move on to the next block of 6
 int codeDuplication(list[Declaration] asts){
     set[str] codeOverSixLines = {};
-    str codeToBeCompared = "";
     //remove comments
-    int duplication = 0;
+    int duplicateLines = 0;
      for(Declaration file <- asts){
-        println(file.src);
         loc fileLocation = file.src;
         str code = readFile(fileLocation);
         list[str] codeLines = cleanup(code);
@@ -174,26 +198,91 @@ int codeDuplication(list[Declaration] asts){
                     codeOverSixLines += md5Hash(codeSubSet);
                 }
                 else{
-                    println(codeLines);
-                    println("--------");
-                    println(codeSubSet);
-                    duplication +=1;
-                    println("old i: <i>");
-                    i = j;                    
-                    println("new i: <i>");
-                    println("old j: <j>");
+                    //skip over the code which is now found to be duplicate, as to not count it multiple times
+                    duplicateLines += j - i + 1;
+                    i = j;
                     j = length - 1;
-                    
-                    println("j: <j>");
                     break;
                 }
                 j -= 1;
             }
             i += 1;
         }
-        println("file cleared");
     }
-    return duplication;
+    return duplicateLines;
+}
+
+int codeDuplication2 (list[Declaration] asts){
+    set[str] sixLineCodeBlocks = {};
+    set[str] duplicateLines = {};
+    for (Declaration file <- asts){
+        loc fileLocation = file.src;
+        str code = readFile(fileLocation);
+        list[str] codeLines = cleanup(code);
+        int length = size(codeLines);
+        int i = 0;
+        while( i <= (length - 6)){
+            str codeSubset = getCodeSubset(i, i+6, codeLines);
+            list[str] sixLinesOfCode = getCodeSubset2(i, i+6, codeLines);
+            if(md5Hash(codeSubset) notin sixLineCodeBlocks){
+                sixLineCodeBlocks += md5Hash(codeSubset);
+            }
+            else{
+                int codeLine = i;
+                for(str line <- sixLinesOfCode){
+                    //add the line in combination with the file location and the line number
+                    // so each specific line will only be added once, but other occureces (other line or file) 
+                    // will be added multiple times
+                    str line = line + fileLocation.uri + "<codeLine>";
+                    duplicateLines += md5Hash(line + fileLocation.uri + "<codeLine>");
+                    codeLine +=1;
+                }
+            }
+            i += 1;
+        }
+    }
+    return size(duplicateLines);
+}
+
+int codeDuplication3 (list[Declaration] asts){
+    // key: unique hash for each block fo code. Value: for each occurence of the code block
+    // add a list of hash for each unique line (line + src + linenr)
+    map[str,list[list[str]]] codeBlocks = ();
+    set[str] duplicateLines = {};
+    for (Declaration file <- asts){
+        loc fileLocation = file.src;
+        str code = readFile(fileLocation);
+        list[str] codeLines = cleanup(code);
+        int length = size(codeLines);
+        int i = 0;
+        while( i <= (length - 6)){
+            str codeSubset = getCodeSubset(i, i+6, codeLines);
+            list[str] sixLinesOfCode = getCodeSubset2(i, i+6, codeLines);
+            str codeBlockHash = md5Hash(codeSubset);
+            list[str] hashedLines = getHashedLines(sixLinesOfCode, [i .. i + 6], fileLocation);
+            if(codeBlockHash notin codeBlocks){
+                codeBlocks[codeBlockHash] = [hashedLines];
+            }
+            else{
+                codeBlocks[codeBlockHash] += [hashedLines];
+            }
+            i += 1;
+        }
+    }
+    //Go over all codeblocks, and check which ones occured more then once
+    //Then add all the unique lines to a set, so you only count every line once
+    for(tuple[str key, list[list[str]] uniquelLines] values <- toList(codeBlocks)){
+        if(size(values.uniquelLines) > 1){
+            for(list[str] nestedList <- values.uniquelLines){
+                duplicateLines += {line | line <- nestedList};
+            }
+        }
+    }
+    return size(duplicateLines);
+}
+
+list[str] getHashedLines(list[str] codeLines, list[int] lineNumbers, loc location){
+    return [codeLines[i] + location.uri + "<lineNumbers[i]>" | int i <- [0 .. 6]];
 }
 
 list[str] cleanup (str code){
@@ -213,6 +302,14 @@ str getCodeSubset(int begin, int end, list[str] code) {
     str codeSubset = "";
     for (int i <- [begin .. end]) {
         codeSubset += code[i] + "\n";
+    }
+    return codeSubset;
+}
+
+list[str] getCodeSubset2(int begin, int end, list[str] code) {
+    list[str] codeSubset = [];
+    for (int i <- [begin .. end]) {
+        codeSubset += [code[i]];
     }
     return codeSubset;
 }
