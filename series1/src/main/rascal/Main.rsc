@@ -16,7 +16,7 @@ void main(int testArgument=0) {
     //println(manYears(linesOfCode(getASTs(testProjectLocation))));
     //println(manYears(linesOfCode(getASTs(testProjectLocation))));
     //println(unitSize(getUnits(getASTs(testProjectLocation))));
-    println(unitComplexity(getUnits(getASTs(projectLocation1))));
+    println(codeDuplication(getASTs(testProjectLocation)));
 }
 
 list[Declaration] getASTs(loc projectLocation) {
@@ -129,7 +129,7 @@ list[int] unitComplexity(list[Declaration] units){
         //     case \visit(_, _): complexity += 1;
         //     case \while(_, _): complexity += 1;
         //     case \yield(_): complexity += 1;
-        // }
+        //}
 
         visit (unit) {
             case \if(_,_) : result += 1;
@@ -151,8 +151,70 @@ list[int] unitComplexity(list[Declaration] units){
 }
 
 //The degree of sourcecode duplication (also called code cloning) influences analysability and change ability
+
+
+//Go through the code using blocks of length 6. If a block has been seen before, mark the lines as duplicate and move on to the next block of 6
 int codeDuplication(list[Declaration] asts){
-    return 0;
+    set[str] codeOverSixLines = {};
+    str codeToBeCompared = "";
+    //remove comments
+    int duplication = 0;
+     for(Declaration file <- asts){
+        println(file.src);
+        loc fileLocation = file.src;
+        str code = readFile(fileLocation);
+        list[str] codeLines = cleanup(code);
+        int length = size(codeLines);
+        int i = 0;
+        while(i < (length - 5)){
+            int j = length -1;
+            while(j >= (i + 5)){
+                str codeSubSet = getCodeSubset(i, j, codeLines);
+                if(md5Hash(codeSubSet) notin codeOverSixLines){
+                    codeOverSixLines += md5Hash(codeSubSet);
+                }
+                else{
+                    println(codeLines);
+                    println("--------");
+                    println(codeSubSet);
+                    duplication +=1;
+                    println("old i: <i>");
+                    i = j;                    
+                    println("new i: <i>");
+                    println("old j: <j>");
+                    j = length - 1;
+                    
+                    println("j: <j>");
+                    break;
+                }
+                j -= 1;
+            }
+            i += 1;
+        }
+        println("file cleared");
+    }
+    return duplication;
+}
+
+list[str] cleanup (str code){
+    list[str] codeLines = split("\n", code);
+    list[str] cleanedUpLines = [];
+    for(str line <- codeLines){
+        line = trim(line);
+        if(!(isWhitespaceOrComment(line))){
+            line += "\n";
+            cleanedUpLines += [line];
+        }
+    }
+    return cleanedUpLines;
+}
+
+str getCodeSubset(int begin, int end, list[str] code) {
+    str codeSubset = "";
+    for (int i <- [begin .. end]) {
+        codeSubset += code[i] + "\n";
+    }
+    return codeSubset;
 }
 
 //funtions to find the SIG ratings based on the metrics above

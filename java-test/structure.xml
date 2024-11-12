@@ -15,7 +15,7 @@
                             <parameter type="int">5</parameter>
                             <methodCall name="getValue" object="testClass" src="java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(337,20,&lt;12,24&gt;,&lt;12,44&gt;)"/>
                         </methodCall>
-                    </expressionStatement> 
+                    </expressionStatement>
                 </block>
             </method>
             <method name="testSetValue" returnType="void" modifiers="public()" src="java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(374,190,&lt;15,4&gt;,&lt;21,5&gt;)">
@@ -45,27 +45,61 @@
         </messages>
     </compilationUnit>
     <compilationUnit src="java+compilationUnit:///../java-test/src/main/java/TestClass.java">
-        <class name="TestClass" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(57,262,&lt;2,0&gt;,&lt;16,1&gt;)">
+        <class name="TestClass" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(57,855,&lt;2,0&gt;,&lt;41,1&gt;)">
             <field name="value" type="int" modifiers="private()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(87,18,&lt;3,4&gt;,&lt;3,22&gt;)"/>
-            <constructor name="TestClass" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(113,65,&lt;5,4&gt;,&lt;7,5&gt;)">
+            <constructor name="TestClass" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(113,200,&lt;5,4&gt;,&lt;12,5&gt;)">
                 <parameter name="value" type="int" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(130,9,&lt;5,21&gt;,&lt;5,30&gt;)"/>
                 <block>
+                    <if condition="value == 0" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(158,10,&lt;7,12&gt;,&lt;7,22&gt;)">
+                        <throw type="IllegalArgumentException" message="Value cannot be zero" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(185,59,&lt;8,12&gt;,&lt;8,71&gt;)"/>
+                    </if>
                     <expressionStatement>
-                        <assignment field="value" value="value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(152,19,&lt;6,8&gt;,&lt;6,27&gt;)"/>
+                        <assignment field="value" value="value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,&lt;10,12&gt;,&lt;10,31&gt;)"/>
                     </expressionStatement>
                 </block>
             </constructor>
-            <method name="getValue" returnType="int" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(186,53,&lt;9,4&gt;,&lt;11,5&gt;)">
+            <method name="getValue" returnType="int" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(321,55,&lt;14,4&gt;,&lt;17,5&gt;)">
                 <block>
-                    <return value="value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(219,13,&lt;10,8&gt;,&lt;10,21&gt;)"/>
+                    <return value="value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(356,13,&lt;16,8&gt;,&lt;16,21&gt;)"/>
                 </block>
             </method>
-            <method name="setValue" returnType="void" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(247,69,&lt;13,4&gt;,&lt;15,5&gt;)">
-                <parameter name="value" type="int" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(268,9,&lt;13,25&gt;,&lt;13,34&gt;)"/>
+            <method name="setValue" returnType="void" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(384,69,&lt;19,4&gt;,&lt;21,5&gt;)">
+                <parameter name="value" type="int" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(405,9,&lt;19,25&gt;,&lt;19,34&gt;)"/>
                 <block>
                     <expressionStatement>
-                        <assignment field="value" value="value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(290,19,&lt;14,8&gt;,&lt;14,27&gt;)"/>
+                        <assignment field="value" value="value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(427,19,&lt;20,8&gt;,&lt;20,27&gt;)"/>
                     </expressionStatement>
+                </block>
+            </method>
+            <method name="isCurrentValue" returnType="boolean" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(461,167,&lt;23,4&gt;,&lt;29,5&gt;)">
+                <parameter name="value" type="int" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(491,9,&lt;23,34&gt;,&lt;23,43&gt;)"/>
+                <block>
+                    <if condition="this.value == value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(517,19,&lt;24,12&gt;,&lt;24,31&gt;)">
+                        <block>
+                            <return value="true" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(553,12,&lt;25,12&gt;,&lt;25,24&gt;)"/>
+                        </block>
+                        <elseBlock>
+                            <return value="false" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(597,13,&lt;27,12&gt;,&lt;27,25&gt;)"/>
+                        </elseBlock>
+                    </if>
+                </block>
+            </method>
+            <method name="compare" returnType="String" modifiers="public()" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(636,273,&lt;31,4&gt;,&lt;40,5&gt;)">
+                <parameter name="value" type="int" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(693,9,&lt;32,26&gt;,&lt;32,35&gt;)"/>
+                <block>
+                    <if condition="this.value == value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(719,19,&lt;33,12&gt;,&lt;33,31&gt;)">
+                        <block>
+                            <return value="equal" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(755,15,&lt;34,12&gt;,&lt;34,27&gt;)"/>
+                        </block>
+                    </if>
+                    <if condition="this.value < value" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(791,18,&lt;35,19&gt;,&lt;35,37&gt;)">
+                        <block>
+                            <return value="larger" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(826,16,&lt;36,12&gt;,&lt;36,28&gt;)"/>
+                        </block>
+                        <elseBlock>
+                            <return value="smaller" src="java+compilationUnit:///../java-test/src/main/java/TestClass.java|(874,17,&lt;38,12&gt;,&lt;38,29&gt;)"/>
+                        </elseBlock>
+                    </if>
                 </block>
             </method>
         </class>
