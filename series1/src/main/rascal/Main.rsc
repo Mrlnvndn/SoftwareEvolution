@@ -16,13 +16,25 @@ void main(int testArgument = 0) {
     //println(manYears(linesOfCode(getASTs(testProjectLocation))));
     //println(manYears(linesOfCode(getASTs(testProjectLocation))));
     //println(unitSize(getUnits(getASTs(testProjectLocation))));
-    int cd1 = codeDuplication3(getASTs(projectLocation2));
-    int loc1 = linesOfCode(getASTs(projectLocation2));
+    // int cd1 = codeDuplication(getASTs(projectLocation2), 6);
+    //println(lineLength(getASTs(projectLocation2)));
     // int cd2 = codeDuplication2(getASTs(projectLocation2));
     // int loc2 = linesOfCode(getASTs(projectLocation2));
-    println("cd1:<cd1>, loc1:<loc1>, percentag:<(cd1*100)/loc1>");
+    // println("cd1:<cd1>, loc1:<loc1>, percentag:<(cd1*100)/loc1>");
     // println("cd2:<cd2>, loc2:<loc2>, percentage:<(cd2/loc2)*100>");
     //println(codeDuplication2(getASTs(testProjectLocation)));
+
+    // println(volumeRating(manYears(linesOfCode(getASTs(testProjectLocation)))));
+    // println(volumeRating(manYears(linesOfCode(getASTs(projectLocation1)))));
+    // println(volumeRating(manYears(linesOfCode(getASTs(projectLocation2)))));
+
+    // println(complexityRating(unitComplexity(getUnits(getASTs(testProjectLocation)))));
+    // println(complexityRating(unitComplexity(getUnits(getASTs(projectLocation1)))));
+    // println(complexityRating(unitComplexity(getUnits(getASTs(projectLocation2)))));
+
+    println(duplicationRank(codeDuplication(getASTs(testProjectLocation),6), linesOfCode(getASTs(testProjectLocation))));
+    println(duplicationRank(codeDuplication(getASTs(projectLocation1),6), linesOfCode(getASTs(projectLocation1))));
+    println(duplicationRank(codeDuplication(getASTs(projectLocation2),6), linesOfCode(getASTs(projectLocation2))));
 }
 
 list[Declaration] getASTs(loc projectLocation) {
@@ -32,28 +44,7 @@ list[Declaration] getASTs(loc projectLocation) {
     return asts;
 }
 
-tuple[int, list[str]] mostOccurringVariables(list[Declaration] asts){
-    map[str, int] variables = ();
-    visit(asts) {
-        case \variable(name, _): variables[name] ? 0 += 1; 
-        case \variable(name, _, _): variables[name] ? 0 += 1; 
-    }
-
-    list[tuple[str,int]] variablesList = toList(variables);
-
-    map[int, list[str]] mostOccuringVariables = ();
-    for (tuple[str, int] varCount <- variablesList) {
-        int count = varCount[1];
-        str varName = varCount[0];
-        mostOccuringVariables[count] ? [] += [varName];
-    }
-
-    list[tuple[int, list[str]]] sortedMostOccuringVariables = [];
-
-    sortedMostOccuringVariables = sort(toList(mostOccuringVariables), bool(tuple[int, list[str]]a, tuple[int, list[str]]b) { return a[0] > b[0];});
-
-    return head(sortedMostOccuringVariables);
-}
+//VOLUME:
 
 //for java: roughly 0.12 MY per KLOC, so 0.00012 MY per LOC
 real manYears(int linesOfCode){
@@ -69,6 +60,114 @@ int linesOfCode(list[Declaration] asts) {
     return totalLines;
 }
 
+// COMPLEXITY PER UNIT:
+
+//The size of units influences their analysability and testability and therefore of the system as a whole
+list[int] unitSize(list[Declaration] units){
+    list[int] unitSizes = [];
+    for(Declaration unit <- units){
+        unitSizes += getLinesOfCode(unit);
+    }
+    return unitSizes;
+}
+
+//The complexity of sourcecode units influences the system’s changeability and its testability
+list[tuple[int, int]] unitComplexity(list[Declaration] units){
+    list[tuple[int, int]] complexities = [];
+    for (Declaration unit <- units){
+        int result = 1;
+        // Add one complexity for each decision point anywhere within this unit
+        visit (unit) {
+            case \if(_,_) : result += 1;
+            case \if(_,_,_) : result += 1;
+            case \case(_) : result += 1;
+            case \do(_,_) : result += 1;
+            case \while(_,_) : result += 1;
+            case \for(_,_,_) : result += 1;
+            case \for(_,_,_,_) : result += 1;
+            case \foreach(_,_,_) : result += 1;
+            case \catch(_,_): result += 1;
+            case \conditional(_,_,_): result += 1;
+            case \infix(_,"&&",_) : result += 1;
+            case \infix(_,"||",_) : result += 1;
+        }
+        complexities += [<getLinesOfCode(unit), result>];
+    }
+    return complexities;
+}
+
+// CODE DUPLICATION:
+
+//Go through the code using blocks of length x. If a block has been seen before, mark the lines as duplicate and move on to the next block of 6
+int codeDuplication (list[Declaration] asts, int codeBlockSize){
+    // key: unique hash for each block fo code. Value: for each occurence of the code block
+    // add a list of hash for each unique line (line + src + linenr)
+    map[str,list[list[str]]] codeBlocks = ();
+    set[str] duplicateLines = {};
+    for (Declaration file <- asts){
+        loc fileLocation = file.src;
+        str code = readFile(fileLocation);
+        list[str] codeLines = cleanup(code);
+        int length = size(codeLines);
+        int i = 0;
+        while( i <= (length - codeBlockSize)){
+            str codeBlock = getCodeBlockAsString(i, i+ codeBlockSize, codeLines);
+            list[str] codeBlockList = getCodeBlockAsList(i, i+codeBlockSize, codeLines);
+            str codeBlockHash = md5Hash(codeBlock);
+            list[str] hashedLines = getHashedLines(codeBlockList, [i .. i + codeBlockSize], fileLocation);
+            if(codeBlockHash notin codeBlocks){
+                codeBlocks[codeBlockHash] = [hashedLines];
+            }
+            else{
+                codeBlocks[codeBlockHash] += [hashedLines];
+            }
+            i += 1;
+        }
+    }
+    //Go over all codeblocks, and check which ones occured more then once
+    //Then add all the unique lines to a set, so you only count every line once
+    for(tuple[str key, list[list[str]] uniquelLines] values <- toList(codeBlocks)){
+        if(size(values.uniquelLines) > 1){
+            for(list[str] nestedList <- values.uniquelLines){
+                duplicateLines += {line | line <- nestedList};
+            }
+        }
+    }
+    return size(duplicateLines);
+}
+
+list[str] getHashedLines(list[str] codeLines, list[int] lineNumbers, loc location){
+    return [md5Hash(codeLines[i] + location.uri + "<lineNumbers[i]>") | int i <- [0 .. size(codeLines)]];
+}
+
+list[str] cleanup (str code){
+    list[str] codeLines = split("\n", code);
+    list[str] cleanedUpLines = [];
+    for(str line <- codeLines){
+        line = trim(line);
+        cleanedUpLines += [line + "\n" | line <- codeLines, !isWhitespaceOrComment(line)];
+    }
+    return cleanedUpLines;
+}
+
+str getCodeBlockAsString(int begin, int end, list[str] code) {
+    str codeSubset = "";
+    for (int i <- [begin .. end]) {
+        codeSubset += code[i] + "\n";
+    }
+    return codeSubset;
+}
+
+list[str] getCodeBlockAsList(int begin, int end, list[str] code) {
+    list[str] codeSubset = [];
+    for (int i <- [begin .. end]) {
+        codeSubset += [code[i]];
+    }
+    return codeSubset;
+}
+
+// UNIT SIZE:
+
 //get total lines of code of a declaration. This can be anything ranging from a class to a function
 int getLinesOfCode(Declaration decl) {
     str sourceCode = readFile(decl.src);
@@ -77,22 +176,8 @@ int getLinesOfCode(Declaration decl) {
     return size(codeLines);
 }
 
-bool isWhitespaceOrComment(str line) {
-    str trimmedLine = trim(line);
-    return isWhitespace(trimmedLine) || isComment(trimmedLine);
-}
-
-bool isWhitespace(str line){
-    return line == "";
-}
-
-//we are aware that this is leaving out certain forms of comment, for example inline comments (person./*blabla*/name) and comments at the end o a line (person.name //blabla)
-bool isComment(str line){
-    return startsWith(line, "//") || startsWith(line, "/*") || startsWith(line, "*") || startsWith(line, "*/");
-}
-
-list[int] lineLength(list[Declaration] asts){
-    list[int] lineLength = [];
+list[real] lineLength(list[Declaration] asts){
+    list[real] lineLength = [];
     for(Declaration decl <- asts){
         lineLength += [getAverageLineLength(decl)];
     }
@@ -122,196 +207,101 @@ list[Declaration] getUnits(list[Declaration] asts){
     return units;
 }
 
-//The size of units influences their analysability and testability and therefore of the system as a whole
-list[int] unitSize(list[Declaration] units){
-    list[int] unitSizes = [];
-    for(Declaration unit <- units){
-        unitSizes += getLinesOfCode(unit);
-    }
-    return unitSizes;
+// HELPER FUNCTIONS:
+
+bool isWhitespaceOrComment(str line) {
+    str trimmedLine = trim(line);
+    return isWhitespace(trimmedLine) || isComment(trimmedLine);
 }
 
-//The complexity of sourcecode units influences the system’s changeability and its testability
-list[int] unitComplexity(list[Declaration] units){
-    list[int] complexities = [];
-    for (Declaration unit <- units){
-        int result = 1;
-        // Add one complexity for each predicate/statement anywhere within this unit
-        // visit(units) {
-        //     case \append(_, _): complexity += 1;
-        //     case \assert(_): complexity += 1;
-        //     case \assignment(_, _, _): complexity += 1;
-        //     case \block(_): complexity += 1;
-        //     case \break(): complexity += 1;
-        //     case \continue(): complexity += 1;
-        //     case \do(_, _): complexity += 1;
-        //     case \fail(): complexity += 1;
-        //     case \filter(_, _): complexity += 1;
-        //     case \for(_, _, _): complexity += 1;
-        //     case \if(_, _): complexity += 1;
-        //     case \return(_): complexity += 1;
-        //     case \switch(_, _): complexity += 1;
-        //     case \try(_, _): complexity += 1;
-        //     case \variable(_, _): complexity += 1;
-        //     case \visit(_, _): complexity += 1;
-        //     case \while(_, _): complexity += 1;
-        //     case \yield(_): complexity += 1;
-        //}
-
-        visit (unit) {
-            case \if(_,_) : result += 1;
-            case \if(_,_,_) : result += 1;
-            case \case(_) : result += 1;
-            case \do(_,_) : result += 1;
-            case \while(_,_) : result += 1;
-            case \for(_,_,_) : result += 1;
-            case \for(_,_,_,_) : result += 1;
-            case \foreach(_,_,_) : result += 1;
-            case \catch(_,_): result += 1;
-            case \conditional(_,_,_): result += 1;
-            case \infix(_,"&&",_) : result += 1;
-            case \infix(_,"||",_) : result += 1;
-        }
-        complexities += [result];
-    }
-    return complexities;
+bool isWhitespace(str line){
+    return line == "";
 }
 
-//The degree of sourcecode duplication (also called code cloning) influences analysability and change ability
-
-//Go through the code using blocks of length 6. If a block has been seen before, mark the lines as duplicate and move on to the next block of 6
-int codeDuplication(list[Declaration] asts){
-    set[str] codeOverSixLines = {};
-    //remove comments
-    int duplicateLines = 0;
-     for(Declaration file <- asts){
-        loc fileLocation = file.src;
-        str code = readFile(fileLocation);
-        list[str] codeLines = cleanup(code);
-        int length = size(codeLines);
-        int i = 0;
-        while(i < (length - 5)){
-            int j = length -1;
-            while(j >= (i + 5)){
-                str codeSubSet = getCodeSubset(i, j, codeLines);
-                if(md5Hash(codeSubSet) notin codeOverSixLines){
-                    codeOverSixLines += md5Hash(codeSubSet);
-                }
-                else{
-                    //skip over the code which is now found to be duplicate, as to not count it multiple times
-                    duplicateLines += j - i + 1;
-                    i = j;
-                    j = length - 1;
-                    break;
-                }
-                j -= 1;
-            }
-            i += 1;
-        }
-    }
-    return duplicateLines;
+//we are aware that this is leaving out certain forms of comment, for example inline comments (person./*blabla*/name) and comments at the end o a line (person.name //blabla)
+bool isComment(str line){
+    return startsWith(line, "//") || startsWith(line, "/*") || startsWith(line, "*") || startsWith(line, "*/");
 }
 
-int codeDuplication2 (list[Declaration] asts){
-    set[str] sixLineCodeBlocks = {};
-    set[str] duplicateLines = {};
-    for (Declaration file <- asts){
-        loc fileLocation = file.src;
-        str code = readFile(fileLocation);
-        list[str] codeLines = cleanup(code);
-        int length = size(codeLines);
-        int i = 0;
-        while( i <= (length - 6)){
-            str codeSubset = getCodeSubset(i, i+6, codeLines);
-            list[str] sixLinesOfCode = getCodeSubset2(i, i+6, codeLines);
-            if(md5Hash(codeSubset) notin sixLineCodeBlocks){
-                sixLineCodeBlocks += md5Hash(codeSubset);
-            }
-            else{
-                int codeLine = i;
-                for(str line <- sixLinesOfCode){
-                    //add the line in combination with the file location and the line number
-                    // so each specific line will only be added once, but other occureces (other line or file) 
-                    // will be added multiple times
-                    str line = line + fileLocation.uri + "<codeLine>";
-                    duplicateLines += md5Hash(line + fileLocation.uri + "<codeLine>");
-                    codeLine +=1;
-                }
-            }
-            i += 1;
-        }
-    }
-    return size(duplicateLines);
-}
-
-int codeDuplication3 (list[Declaration] asts){
-    // key: unique hash for each block fo code. Value: for each occurence of the code block
-    // add a list of hash for each unique line (line + src + linenr)
-    map[str,list[list[str]]] codeBlocks = ();
-    set[str] duplicateLines = {};
-    for (Declaration file <- asts){
-        loc fileLocation = file.src;
-        str code = readFile(fileLocation);
-        list[str] codeLines = cleanup(code);
-        int length = size(codeLines);
-        int i = 0;
-        while( i <= (length - 6)){
-            str codeSubset = getCodeSubset(i, i+6, codeLines);
-            list[str] sixLinesOfCode = getCodeSubset2(i, i+6, codeLines);
-            str codeBlockHash = md5Hash(codeSubset);
-            list[str] hashedLines = getHashedLines(sixLinesOfCode, [i .. i + 6], fileLocation);
-            if(codeBlockHash notin codeBlocks){
-                codeBlocks[codeBlockHash] = [hashedLines];
-            }
-            else{
-                codeBlocks[codeBlockHash] += [hashedLines];
-            }
-            i += 1;
-        }
-    }
-    //Go over all codeblocks, and check which ones occured more then once
-    //Then add all the unique lines to a set, so you only count every line once
-    for(tuple[str key, list[list[str]] uniquelLines] values <- toList(codeBlocks)){
-        if(size(values.uniquelLines) > 1){
-            for(list[str] nestedList <- values.uniquelLines){
-                duplicateLines += {line | line <- nestedList};
-            }
-        }
-    }
-    return size(duplicateLines);
-}
-
-list[str] getHashedLines(list[str] codeLines, list[int] lineNumbers, loc location){
-    return [codeLines[i] + location.uri + "<lineNumbers[i]>" | int i <- [0 .. 6]];
-}
-
-list[str] cleanup (str code){
-    list[str] codeLines = split("\n", code);
-    list[str] cleanedUpLines = [];
-    for(str line <- codeLines){
-        line = trim(line);
-        if(!(isWhitespaceOrComment(line))){
-            line += "\n";
-            cleanedUpLines += [line];
-        }
-    }
-    return cleanedUpLines;
-}
-
-str getCodeSubset(int begin, int end, list[str] code) {
-    str codeSubset = "";
-    for (int i <- [begin .. end]) {
-        codeSubset += code[i] + "\n";
-    }
-    return codeSubset;
-}
-
-list[str] getCodeSubset2(int begin, int end, list[str] code) {
-    list[str] codeSubset = [];
-    for (int i <- [begin .. end]) {
-        codeSubset += [code[i]];
-    }
-    return codeSubset;
-}
 
 //funtions to find the SIG ratings based on the metrics above
+str volumeRating (real manYears){
+    if (manYears <= 8){
+        return "++";
+    }
+    if (manYears > 8 && manYears <= 30){
+        return "+";
+    }
+    if (manYears > 30 && manYears <= 80){
+        return "+";
+    }
+    if (manYears > 80 && manYears <= 160){
+        return "+";
+    }
+    else {
+        return "--";
+    }
+}
+
+str complexityRating(list[tuple[int linesOfCode, int complexity]] ccs){
+    real veryHigh = 0.0;
+    real high = 0.0;
+    real moderate = 0.0;
+    real low = 0.0;
+    
+    for(tuple[int linesOfCode, int complexity]cc <- ccs){
+        if (cc.complexity <=10){
+            low += cc.linesOfCode;
+        }
+        if (cc.complexity > 10 && cc.complexity <= 20){
+            moderate += cc.linesOfCode;
+        }
+        if (cc.complexity > 20 && cc.complexity <= 50){
+            high += cc.linesOfCode;
+        }
+        if (cc.complexity > 50 ){
+            veryHigh += cc.linesOfCode;
+        }
+    }
+
+    real total = low + moderate + high + veryHigh;
+    real veryHighPerc = veryHigh/total * 100;
+    real highPerc = high/total * 100;
+    real moderatePerc = moderate/total * 100;
+    real lowPerc = low/total * 100;
+    println("veryHighPerc: <veryHighPerc>, highPerc: <highPerc>, moderatePerc: <moderatePerc>, lowPerc: <lowPerc>, totalPerc: <lowPerc+moderatePerc+highPerc+veryHighPerc>");
+    if(veryHighPerc < 1 && highPerc < 1 && moderatePerc <= 25){
+        return "++";
+    }
+    if(veryHighPerc < 1 && highPerc <= 5 && moderatePerc <= 30){
+        return "+";
+    }
+    if(veryHighPerc < 1 && highPerc <= 10 && moderatePerc <= 40){
+        return "o";
+    }
+    if(veryHighPerc <= 5 && highPerc <= 15 && moderatePerc <= 50){
+        return "-";
+    }
+    else{
+        return "--";
+    }
+}
+
+str duplicationRating(int duplication, int linesOfCode){
+    int duplicationPerc = duplication * 100 / linesOfCode;
+    if(duplicationPerc <= 3)    {
+        return "++";
+    }
+    if(duplicationPerc <= 5){
+        return "+";
+    }
+    if(duplicationPerc <= 10){
+        return "o";
+    }
+    if(duplicationPerc <= 20 ){
+        return "-";
+    }
+    else{
+        return "--";
+    }
+}
