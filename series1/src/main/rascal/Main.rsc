@@ -32,9 +32,9 @@ void main(int testArgument = 0) {
     // println(complexityRating(unitComplexity(getUnits(getASTs(projectLocation1)))));
     // println(complexityRating(unitComplexity(getUnits(getASTs(projectLocation2)))));
 
-    println(duplicationRank(codeDuplication(getASTs(testProjectLocation),6), linesOfCode(getASTs(testProjectLocation))));
-    println(duplicationRank(codeDuplication(getASTs(projectLocation1),6), linesOfCode(getASTs(projectLocation1))));
-    println(duplicationRank(codeDuplication(getASTs(projectLocation2),6), linesOfCode(getASTs(projectLocation2))));
+    println(duplicationRating(codeDuplication(getASTs(testProjectLocation),6), linesOfCode(getASTs(testProjectLocation))));
+    println(duplicationRating(codeDuplication(getASTs(projectLocation1),6), linesOfCode(getASTs(projectLocation1))));
+    println(duplicationRating(codeDuplication(getASTs(projectLocation2),6), linesOfCode(getASTs(projectLocation2))));
 }
 
 list[Declaration] getASTs(loc projectLocation) {
@@ -233,7 +233,7 @@ str volumeRating (real manYears){
         return "+";
     }
     if (manYears > 30 && manYears <= 80){
-        return "+";
+        return "o";
     }
     if (manYears > 80 && manYears <= 160){
         return "+";
@@ -243,48 +243,22 @@ str volumeRating (real manYears){
     }
 }
 
-str complexityRating(list[tuple[int linesOfCode, int complexity]] ccs){
-    real veryHigh = 0.0;
-    real high = 0.0;
-    real moderate = 0.0;
-    real low = 0.0;
-    
-    for(tuple[int linesOfCode, int complexity]cc <- ccs){
-        if (cc.complexity <=10){
-            low += cc.linesOfCode;
-        }
-        if (cc.complexity > 10 && cc.complexity <= 20){
-            moderate += cc.linesOfCode;
-        }
-        if (cc.complexity > 20 && cc.complexity <= 50){
-            high += cc.linesOfCode;
-        }
-        if (cc.complexity > 50 ){
-            veryHigh += cc.linesOfCode;
+str complexityRating(list[tuple[int linesOfCode, int complexity]] ccs) {
+    map[str, real] locPerCategory = ("low": 0.0, "moderate": 0.0, "high": 0.0, "veryHigh": 0.0);
+
+    for (tuple[int linesOfCode, int complexity] cc <- ccs) {
+        if (cc.complexity <= 10) {
+            locPerCategory["low"] += cc.linesOfCode;
+        } else if (cc.complexity <= 20) {
+            locPerCategory["moderate"] += cc.linesOfCode;
+        } else if (cc.complexity <= 50) {
+            locPerCategory["high"] += cc.linesOfCode;
+        } else {
+            locPerCategory["veryHigh"] += cc.linesOfCode;
         }
     }
 
-    real total = low + moderate + high + veryHigh;
-    real veryHighPerc = veryHigh/total * 100;
-    real highPerc = high/total * 100;
-    real moderatePerc = moderate/total * 100;
-    real lowPerc = low/total * 100;
-    println("veryHighPerc: <veryHighPerc>, highPerc: <highPerc>, moderatePerc: <moderatePerc>, lowPerc: <lowPerc>, totalPerc: <lowPerc+moderatePerc+highPerc+veryHighPerc>");
-    if(veryHighPerc < 1 && highPerc < 1 && moderatePerc <= 25){
-        return "++";
-    }
-    if(veryHighPerc < 1 && highPerc <= 5 && moderatePerc <= 30){
-        return "+";
-    }
-    if(veryHighPerc < 1 && highPerc <= 10 && moderatePerc <= 40){
-        return "o";
-    }
-    if(veryHighPerc <= 5 && highPerc <= 15 && moderatePerc <= 50){
-        return "-";
-    }
-    else{
-        return "--";
-    }
+    return calculateRating(locPerCategory);
 }
 
 str duplicationRating(int duplication, int linesOfCode){
@@ -302,6 +276,47 @@ str duplicationRating(int duplication, int linesOfCode){
         return "-";
     }
     else{
+        return "--";
+    }
+}
+
+str locRating(list[int] linesOfCodePerUnit){
+    map[str, real] locPerCategory = ("low": 0.0, "moderate": 0.0, "high": 0.0, "veryHigh": 0.0);
+
+    for(int linesOfCode <- linesOfCodePerUnit){
+        if(linesOfCode <= 15){
+             locPerCategory["low"] += linesOfCode;
+        }
+        if(linesOfCode <= 30){
+             locPerCategory["moderate"] += linesOfCode;
+        }
+        if(linesOfCode <= 60){
+             locPerCategory["high"] += linesOfCode;
+        }
+        else{
+             locPerCategory["veryHigh"] += linesOfCode;
+        }
+    }
+
+    return calculateRating(categories);
+}
+
+str calculateRating(map[str, real] locPerCategory) {
+    real total = categories["low"] + categories["moderate"] + categories["high"] + categories["veryHigh"];
+    real veryHighPerc = categories["veryHigh"] / total * 100;
+    real highPerc = categories["high"] / total * 100;
+    real moderatePerc = categories["moderate"] / total * 100;
+    real lowPerc = categories["low"] / total * 100;
+
+    if (veryHighPerc < 1 && highPerc < 1 && moderatePerc <= 25) {
+        return "++";
+    } else if (veryHighPerc < 1 && highPerc <= 5 && moderatePerc <= 30) {
+        return "+";
+    } else if (veryHighPerc < 1 && highPerc <= 10 && moderatePerc <= 40) {
+        return "o";
+    } else if (veryHighPerc <= 5 && highPerc <= 15 && moderatePerc <= 50) {
+        return "-";
+    } else {
         return "--";
     }
 }
