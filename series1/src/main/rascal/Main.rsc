@@ -8,33 +8,52 @@ import Set;
 import String;
 import Map;
 
-loc projectLocation1 = |cwd:///../smallsql0.21_src/smallsql0.21_src/|;
-loc projectLocation2 = |cwd:///../hsqldb-2.3.1/hsqldb-2.3.1/|;
+loc smallProjectLocation = |cwd:///../smallsql0.21_src/smallsql0.21_src/|;
+loc largeProjectLocation = |cwd:///../hsqldb-2.3.1/hsqldb-2.3.1/|;
 loc testProjectLocation = |cwd:///../java-test/|;
 
+int codeBlockSize = 6;
+
 void main(int testArgument = 0) {
-    //println(manYears(linesOfCode(getASTs(testProjectLocation))));
-    //println(manYears(linesOfCode(getASTs(testProjectLocation))));
-    //println(unitSize(getUnits(getASTs(testProjectLocation))));
-    // int cd1 = codeDuplication(getASTs(projectLocation2), 6);
-    //println(lineLength(getASTs(projectLocation2)));
-    // int cd2 = codeDuplication2(getASTs(projectLocation2));
-    // int loc2 = linesOfCode(getASTs(projectLocation2));
-    // println("cd1:<cd1>, loc1:<loc1>, percentag:<(cd1*100)/loc1>");
-    // println("cd2:<cd2>, loc2:<loc2>, percentage:<(cd2/loc2)*100>");
-    //println(codeDuplication2(getASTs(testProjectLocation)));
+    analyzeProject("Test Project", testProjectLocation);
+    analyzeProject("Small Project", smallProjectLocation);
+    analyzeProject("Large Project", largeProjectLocation);
+}
 
-    // println(volumeRating(manYears(linesOfCode(getASTs(testProjectLocation)))));
-    // println(volumeRating(manYears(linesOfCode(getASTs(projectLocation1)))));
-    // println(volumeRating(manYears(linesOfCode(getASTs(projectLocation2)))));
+void analyzeProject(str projectName, loc projectLocation) {
+    list[Declaration] asts = getASTs(projectLocation);
+    list[Declaration] units = getUnits(asts);
 
-    // println(complexityRating(unitComplexity(getUnits(getASTs(testProjectLocation)))));
-    // println(complexityRating(unitComplexity(getUnits(getASTs(projectLocation1)))));
-    // println(complexityRating(unitComplexity(getUnits(getASTs(projectLocation2)))));
+    // volume
+    int totalLOC = totalLinesOfCode(asts);
+    real my = manYears(totalLOC);
 
-    println(duplicationRating(codeDuplication(getASTs(testProjectLocation),6), linesOfCode(getASTs(testProjectLocation))));
-    println(duplicationRating(codeDuplication(getASTs(projectLocation1),6), linesOfCode(getASTs(projectLocation1))));
-    println(duplicationRating(codeDuplication(getASTs(projectLocation2),6), linesOfCode(getASTs(projectLocation2))));
+    // unit size
+    list[int] unitSizesList = unitSizes(units);
+    list[real] unitLineLength = lineLengthPerUnit(units);
+
+    // complexity
+    list[tuple[int, int]] unitComplexityList = unitComplexity(units);
+
+    // code duplication
+    int codeDupl = codeDuplication(asts, codeBlockSize);
+
+    // risk profiles
+    map[str, real] unitSizeRiskProfile = unitSizeRiskProfile(unitSizesList);
+    map[str, real] complexityRiskProfile = complexityRiskProfile(unitComplexityList);
+
+    // SIG scores
+    str volumeRating = volumeRating(my);
+    str unitSizeRating = RiskProfileToRating(unitSizeRiskProfile);
+    str complexityRating = RiskProfileToRating(complexityRiskProfile);
+    str duplicationRating = duplicationRating(codeDupl, totalLOC);
+
+    println("<projectName> SIG Scores:");
+    println("Volume Rating: <volumeRating>");
+    println("Unit Size Rating: <unitSizeRating>");
+    println("Complexity Rating: <complexityRating>");
+    println("Duplication Rating: <duplicationRating>");
+    println("--------------------------------------------");
 }
 
 list[Declaration] getASTs(loc projectLocation) {
@@ -52,7 +71,7 @@ real manYears(int linesOfCode){
 }
 
 //only look at the highest level of the asts, so you can just get the source code and filter out the emtpy lines and comments
-int linesOfCode(list[Declaration] asts) {
+int totalLinesOfCode(list[Declaration] asts) {
     int totalLines = 0;
     for (Declaration decl <- asts) {
         totalLines += getLinesOfCode(decl);
@@ -61,15 +80,6 @@ int linesOfCode(list[Declaration] asts) {
 }
 
 // COMPLEXITY PER UNIT:
-
-//The size of units influences their analysability and testability and therefore of the system as a whole
-list[int] unitSize(list[Declaration] units){
-    list[int] unitSizes = [];
-    for(Declaration unit <- units){
-        unitSizes += getLinesOfCode(unit);
-    }
-    return unitSizes;
-}
 
 //The complexity of sourcecode units influences the system’s changeability and its testability
 list[tuple[int, int]] unitComplexity(list[Declaration] units){
@@ -168,6 +178,15 @@ list[str] getCodeBlockAsList(int begin, int end, list[str] code) {
 
 // UNIT SIZE:
 
+//The size of units influences their analysability and testability and therefore of the system as a whole
+list[int] unitSizes(list[Declaration] units){
+    list[int] unitSizes = [];
+    for(Declaration unit <- units){
+        unitSizes += getLinesOfCode(unit);
+    }
+    return unitSizes;
+}
+
 //get total lines of code of a declaration. This can be anything ranging from a class to a function
 int getLinesOfCode(Declaration decl) {
     str sourceCode = readFile(decl.src);
@@ -176,18 +195,18 @@ int getLinesOfCode(Declaration decl) {
     return size(codeLines);
 }
 
-list[real] lineLength(list[Declaration] asts){
+list[real] lineLengthPerUnit(list[Declaration] units){
     list[real] lineLength = [];
-    for(Declaration decl <- asts){
+    for(Declaration decl <- units){
         lineLength += [getAverageLineLength(decl)];
     }
     return lineLength;
 }
 
-real getAverageLineLength(Declaration decl){
+real getAverageLineLength(Declaration unit){
     real totalLines = 0.0;
     real totalLength = 0.0;
-    str sourceCode = readFile(decl.src);
+    str sourceCode = readFile(unit.src);
     list[str] lines = split("\n", sourceCode);
     list[str] codeLines = [line | line <- lines, !isWhitespaceOrComment(line)];
     for(str codeLine <- codeLines){
@@ -218,32 +237,14 @@ bool isWhitespace(str line){
     return line == "";
 }
 
-//we are aware that this is leaving out certain forms of comment, for example inline comments (person./*blabla*/name) and comments at the end o a line (person.name //blabla)
+//we are aware that this is leaving out certain forms of comment, for example inline comments (person./*blabla*/name) 
+//and comments at the end of a line (person.name //blabla)
 bool isComment(str line){
     return startsWith(line, "//") || startsWith(line, "/*") || startsWith(line, "*") || startsWith(line, "*/");
 }
 
-
 //funtions to find the SIG ratings based on the metrics above
-str volumeRating (real manYears){
-    if (manYears <= 8){
-        return "++";
-    }
-    if (manYears > 8 && manYears <= 30){
-        return "+";
-    }
-    if (manYears > 30 && manYears <= 80){
-        return "o";
-    }
-    if (manYears > 80 && manYears <= 160){
-        return "+";
-    }
-    else {
-        return "--";
-    }
-}
-
-str complexityRating(list[tuple[int linesOfCode, int complexity]] ccs) {
+map[str, real] complexityRiskProfile(list[tuple[int linesOfCode, int complexity]] ccs) {
     map[str, real] locPerCategory = ("low": 0.0, "moderate": 0.0, "high": 0.0, "veryHigh": 0.0);
 
     for (tuple[int linesOfCode, int complexity] cc <- ccs) {
@@ -258,7 +259,28 @@ str complexityRating(list[tuple[int linesOfCode, int complexity]] ccs) {
         }
     }
 
-    return calculateRating(locPerCategory);
+    return locPerCategory;
+}
+
+map[str, real] unitSizeRiskProfile(list[int] linesOfCodePerUnit){
+    map[str, real] locPerCategory = ("low": 0.0, "moderate": 0.0, "high": 0.0, "veryHigh": 0.0);
+
+    for(int linesOfCode <- linesOfCodePerUnit){
+        if(linesOfCode <= 15){
+             locPerCategory["low"] += linesOfCode;
+        }
+        if(linesOfCode <= 30){
+             locPerCategory["moderate"] += linesOfCode;
+        }
+        if(linesOfCode <= 60){
+             locPerCategory["high"] += linesOfCode;
+        }
+        else{
+             locPerCategory["veryHigh"] += linesOfCode;
+        }
+    }
+
+    return locPerCategory;
 }
 
 str duplicationRating(int duplication, int linesOfCode){
@@ -280,33 +302,35 @@ str duplicationRating(int duplication, int linesOfCode){
     }
 }
 
-str locRating(list[int] linesOfCodePerUnit){
-    map[str, real] locPerCategory = ("low": 0.0, "moderate": 0.0, "high": 0.0, "veryHigh": 0.0);
-
-    for(int linesOfCode <- linesOfCodePerUnit){
-        if(linesOfCode <= 15){
-             locPerCategory["low"] += linesOfCode;
-        }
-        if(linesOfCode <= 30){
-             locPerCategory["moderate"] += linesOfCode;
-        }
-        if(linesOfCode <= 60){
-             locPerCategory["high"] += linesOfCode;
-        }
-        else{
-             locPerCategory["veryHigh"] += linesOfCode;
-        }
+str volumeRating (real manYears){
+    if (manYears <= 8){
+        return "++";
     }
-
-    return calculateRating(categories);
+    if (manYears > 8 && manYears <= 30){
+        return "+";
+    }
+    if (manYears > 30 && manYears <= 80){
+        return "o";
+    }
+    if (manYears > 80 && manYears <= 160){
+        return "+";
+    }
+    else {
+        return "--";
+    }
 }
 
-str calculateRating(map[str, real] locPerCategory) {
-    real total = categories["low"] + categories["moderate"] + categories["high"] + categories["veryHigh"];
-    real veryHighPerc = categories["veryHigh"] / total * 100;
-    real highPerc = categories["high"] / total * 100;
-    real moderatePerc = categories["moderate"] / total * 100;
-    real lowPerc = categories["low"] / total * 100;
+str RiskProfileToRating(map[str, real] locPerCategory) {
+    real total = locPerCategory["low"] + locPerCategory["moderate"] + locPerCategory["high"] + locPerCategory["veryHigh"];
+    real veryHighPerc = locPerCategory["veryHigh"] / total * 100;
+    real highPerc = locPerCategory["high"] / total * 100;
+    real moderatePerc = locPerCategory["moderate"] / total * 100;
+    real lowPerc = locPerCategory["low"] / total * 100;
+
+    println("Very High Percentage: <veryHighPerc>");
+    println("High Percentage: <highPerc>");
+    println("Moderate Percentage: <moderatePerc>");
+    println("Low Percentage: <lowPerc>");
 
     if (veryHighPerc < 1 && highPerc < 1 && moderatePerc <= 25) {
         return "++";
