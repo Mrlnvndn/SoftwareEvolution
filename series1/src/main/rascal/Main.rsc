@@ -30,11 +30,10 @@ void analyzeProject(str projectName, loc projectLocation) {
 
     // unit size
     list[int] unitSizesList = unitSizes(units);
-    list[real] unitLineLength = lineLengthPerUnit(units);
+    real averageLineLength = averageLineLength(asts);
 
     // complexity
     list[tuple[int, int]] unitComplexityList = unitComplexity(units);
-
     // code duplication
     int codeDupl = codeDuplication(asts, codeBlockSize);
 
@@ -44,16 +43,44 @@ void analyzeProject(str projectName, loc projectLocation) {
 
     // SIG scores
     str volumeRating = volumeRating(my);
-    str unitSizeRating = RiskProfileToRating(unitSizeRiskProfile);
-    str complexityRating = RiskProfileToRating(complexityRiskProfile);
+    str unitSizeRating = riskProfileToRating(unitSizeRiskProfile);
+    str complexityRating = riskProfileToRating(complexityRiskProfile);
     str duplicationRating = duplicationRating(codeDupl, totalLOC);
+
+    // maintainability scores
+    str analysabilityRating = sigRatingAverage([volumeRating,duplicationRating, unitSizeRating]);
+    str changeabilityRating = sigRatingAverage([complexityRating, duplicationRating]);
+    str testabilityRating = sigRatingAverage([complexityRating,unitSizeRating]);
+    str overalMaintainabilityRating = sigRatingAverage([analysabilityRating, changeabilityRating, testabilityRating]);
+
+    println("<projectName> Metric Values:");
+    println("Man Years: <my>");
+    println("Unit sizes: <unitSizesList>");
+    println("Average Line Length: <averageLineLength>");
+    println("Unit Complexities: <unitComplexityList>");
+    println("Dupliate lines: <codeDupl>");
+    println();
+
+    println("<projectName> Risk Profiles (\<LOC,Category\>)");
+    println("Unit Size Risk Profile: <unitSizeRiskProfile>");
+    println("Complexity Risk Profile: <complexityRiskProfile>");
+    println();
 
     println("<projectName> SIG Scores:");
     println("Volume Rating: <volumeRating>");
     println("Unit Size Rating: <unitSizeRating>");
     println("Complexity Rating: <complexityRating>");
     println("Duplication Rating: <duplicationRating>");
+    println();
+
+    println("<projectName> Maintainability Scores:");
+    println("Analysability Rating: <analysabilityRating>");
+    println("Changeability Rating: <changeabilityRating>");
+    println("Testability Rating: <testabilityRating>");
+    println("Overall Maintainability Rating: <overalMaintainabilityRating>");
     println("--------------------------------------------");
+    println();
+
 }
 
 list[Declaration] getASTs(loc projectLocation) {
@@ -195,12 +222,23 @@ int getLinesOfCode(Declaration decl) {
     return size(codeLines);
 }
 
-list[real] lineLengthPerUnit(list[Declaration] units){
-    list[real] lineLength = [];
-    for(Declaration decl <- units){
-        lineLength += [getAverageLineLength(decl)];
+real averageLineLength(list[Declaration] units) {
+    real totalLines = 0.0;
+    real totalLength = 0.0;
+    for (Declaration unit <- units) {
+        real unitLines = 0.0;
+        real unitLength = 0.0;
+        str sourceCode = readFile(unit.src);
+        list[str] lines = split("\n", sourceCode);
+        list[str] codeLines = [line | line <- lines, !isWhitespaceOrComment(line)];
+        for (str codeLine <- codeLines) {
+            unitLines += 1;
+            unitLength += size(codeLine);
+        }
+        totalLines += unitLines;
+        totalLength += unitLength;
     }
-    return lineLength;
+    return totalLength / totalLines;
 }
 
 real getAverageLineLength(Declaration unit){
@@ -264,15 +302,15 @@ map[str, real] complexityRiskProfile(list[tuple[int linesOfCode, int complexity]
 
 map[str, real] unitSizeRiskProfile(list[int] linesOfCodePerUnit){
     map[str, real] locPerCategory = ("low": 0.0, "moderate": 0.0, "high": 0.0, "veryHigh": 0.0);
-
+    
     for(int linesOfCode <- linesOfCodePerUnit){
         if(linesOfCode <= 15){
              locPerCategory["low"] += linesOfCode;
         }
-        if(linesOfCode <= 30){
+        else if(linesOfCode <= 30){
              locPerCategory["moderate"] += linesOfCode;
         }
-        if(linesOfCode <= 60){
+        else if(linesOfCode <= 60){
              locPerCategory["high"] += linesOfCode;
         }
         else{
@@ -320,17 +358,12 @@ str volumeRating (real manYears){
     }
 }
 
-str RiskProfileToRating(map[str, real] locPerCategory) {
+str riskProfileToRating(map[str, real] locPerCategory) {
     real total = locPerCategory["low"] + locPerCategory["moderate"] + locPerCategory["high"] + locPerCategory["veryHigh"];
     real veryHighPerc = locPerCategory["veryHigh"] / total * 100;
     real highPerc = locPerCategory["high"] / total * 100;
     real moderatePerc = locPerCategory["moderate"] / total * 100;
     real lowPerc = locPerCategory["low"] / total * 100;
-
-    println("Very High Percentage: <veryHighPerc>");
-    println("High Percentage: <highPerc>");
-    println("Moderate Percentage: <moderatePerc>");
-    println("Low Percentage: <lowPerc>");
 
     if (veryHighPerc < 1 && highPerc < 1 && moderatePerc <= 25) {
         return "++";
@@ -339,6 +372,35 @@ str RiskProfileToRating(map[str, real] locPerCategory) {
     } else if (veryHighPerc < 1 && highPerc <= 10 && moderatePerc <= 40) {
         return "o";
     } else if (veryHighPerc <= 5 && highPerc <= 15 && moderatePerc <= 50) {
+        return "-";
+    } else {
+        return "--";
+    }
+}
+
+str sigRatingAverage(list[str] scores){
+    real totalScore = 0.0;
+    for(str score <- scores){
+        if(score == "++"){
+            totalScore += 2;
+        }if(score == "+"){
+            totalScore += 1;
+        }if(score == "-"){
+            totalScore -= 1;
+        }if(score == "--"){
+            totalScore -= 2;
+        }
+    }
+
+    real averageScore = totalScore / size(scores);
+
+    if (averageScore >= 1.5) {
+        return "++";
+    } else if (averageScore >= 0.5) {
+        return "+";
+    } else if (averageScore >= -0.5) {
+        return "o";
+    } else if (averageScore >= -1.5) {
         return "-";
     } else {
         return "--";

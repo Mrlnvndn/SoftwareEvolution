@@ -35,7 +35,18 @@ public class TestClass {
         } else if (this.value < value) {
             return "larger";
         } else {
+            test22();
             return "smaller";
+        }
+    }
+
+    public void test22() {
+        if (true) {
+
+        } else if (false) {
+
+        } else {
+
         }
     }
 }
