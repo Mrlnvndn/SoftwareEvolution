@@ -12,7 +12,6 @@ public class TestClass {
     }
 
     public int getValue() {
-
         return value;
     }
 
@@ -42,11 +41,11 @@ public class TestClass {
 
     public void test22() {
         if (true) {
-
+            System.out.println("This will never be printed");
         } else if (false) {
-
+            System.out.println("This will never be printed");
         } else {
-
+            System.out.println("This will never be printed");
         }
     }
 }

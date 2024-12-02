@@ -7,30 +7,24 @@ import List;
 import Set;
 import String;
 import Map;
+import Node;
 
 loc testProject = |cwd:///../java-test|;
 loc smallProject = |cwd:///../smallsql0.21_src/smallsql0.21_src/|;
 loc largeProject = |cwd:///../hsqldb-2.3.1/hsqldb-2.3.1/|;
 
+loc outputFile = |cwd:///output.txt|;
+
+int numBuckets = 0;
+
 int main(int testArgument=0) {
     list[Declaration] asts  = (getASTs(testProject));
-    //traverseAST(asts[0]);
-    //println("----");
-    list[Declaration] decls = collectDeclarations([asts[2]]);
-    list[Statement] stmts = collectStatements([asts[2]]);
-    for(Declaration decl <- decls){
-        println(decl);
-        println("<decl.typ> from line <decl.src.begin.line> to line <decl.src.end.line>");
-        println("------------------------------------");
-    }
 
-    for(Statement stmt <- stmts){
-        println(stmt);
-        println("from line <stmt.src.begin.line> to line <stmt.src.end.line>");
-        println("------------------------------------");
-    }
+    numBuckets = 10;
 
-    //println(size(collectDeclarations(asts)));
+    list[tuple[node, node]] clonePairs = detectCodeClones(asts);
+    appendToFile(outputFile, clonePairs);
+    
     return testArgument;
 }
 
@@ -41,170 +35,203 @@ list[Declaration] getASTs(loc projectLocation) {
     return asts;
 }
 
-//What should it return?
-
-//Should  you go over the asts 3 times? (for each duplication level once?)
-
 bool areSubTreesEqual(Declaration ast1, Declaration ast2){
-    if(ast1 == ast2){
-        return true;
+    return true;
+}
+
+list[tuple[node, node]] detectCodeClones(list[Declaration] asts){
+    //key:bucket hash, value: node (subtree)
+    map[int, list[node]] buckets = ();
+     //list of node lists for each clone class
+    list[list[node]] cloneClasses = [];
+    //list of node tuples for each clone pair
+    list[tuple[node, node]] clonePairs = [];
+    //key: subtree hash, value: node (subtree)
+    map[int, list[node]] nodeMap = ();
+    
+    for(Declaration ast <- asts){
+        computeSubTreeHash(ast, buckets, nodeMap); 
     }
-    else{
+
+     for(tuple[int, list[node]] bucket <- toList(buckets)){
+        //identify clone clonePairs
+        clonePairs = findClonePairs(buckets);
+        //group pairs into cloneClasses 
+     }
+
+     return clonePairs;
+}
+
+int computeSubTreeHash(node tree, map[int, list[node]] buckets, map[int, list[node]] nodeMap){
+    int treeHash = 0;
+
+    list[list[node]] childrenList = [child | list[node] child <- getChildren(tree)];
+    list[node] children = [child | list[node] childList <- childrenList, node child <- childList];
+    children += [child | node child <- getChildren(tree)];
+    println("node name: <getName(tree)>");
+    for(node n <- children){
+        println("node children: <getName(n)>");
+    }
+    if (children == []){
+        treeHash = computeHash(tree, []);
+    }
+    else {
+        // check size of subtree
+        childHashes = [computeSubTreeHash(child, buckets, nodeMap) | node child <- children];
+        treeHash = computeHash(tree, childHashes);
+    }
+
+    // // Add size check
+    // int bucketIndex = treeHash % numBuckets;
+    // if (bucketIndex notin buckets){
+    //     buckets[bucketIndex] = [];
+    // }
+    // buckets[bucketIndex] += [tree];
+
+    return treeHash;
+}
+
+//This needs to be refined
+int computeHash(node currentNode, list[int] childHashes){
+    int base = 31;
+    int prime = 1000000007;
+    int treeHash = polynomialHash(getName(currentNode));
+
+    for(int childHash <- childHashes){
+        treeHash = (treeHash * base + childHash) % prime;
+    }
+    return treeHash;
+}
+
+int polynomialHash(str s, int base = 31, int prime = 1000000007) {
+    int hashValue = 0;
+    for (int c <- chars(s)) {
+        hashValue = (hashValue * base + c) % prime;
+    }
+    return hashValue;
+}
+
+list[tuple[node, node]] findClonePairs( map[int, list[node]] buckets){
+    list[tuple[node, node]] pairs = [];
+    list[list[node]] bucketsValues = toList(range(buckets));
+    //Compare all nodes in the same bucket
+    for (int i <- [ 0 .. size(bucketsValues)]){
+        list[node] bucket = bucketsValues[i];
+        for(int j <- [0 .. size(bucket) - 1]){
+            for(int k <- [j + 1 .. size(bucket)]){
+                node node1 = bucket[j];
+                node node2 = bucket[k];
+                // Ensure structural equality
+                if(deepEquals(node1, node2)){ // Ensure structural equality
+                    pairs += [<node1, node2>];
+                }
+            }
+        }
+    }
+    return pairs;
+}
+
+bool deepEquals(node node1, node node2){
+
+    //compare two subtrees toroughly. getName gets the type (methodCall, Class, method)
+    if (getName(node1) != getName(node2)) {
+        println("not equal:");
+        println("loc1: <node1.src>");
+        println("loc2: <node2.src>");
         return false;
     }
-}
 
+    list[node] children1 = [ child | node child <- getChildren(node1)];
+    list[node] children2 = [ child | node child <- getChildren(node2)];
 
-//How to get to all subtrees? And how to collect them?
-void traverseAST(Declaration ast){
-        visit(ast) {
-            case classDecl:\class(_, _, _, _, _, _): {
-                println("Found a class declaration: <classDecl>");
-                visit(classDecl) {
-                    case methodDecl:\method(_, _, _, _, _, _): {
-                        println("Found a method declaration: <methodDecl>");
-                    }
-                }
-            }   
-        }
-    
-}
-
-list[Declaration] collectDeclarations(list[Declaration] asts) {
-    list[Declaration] decls = [decl |Declaration decl <- asts[0]];
-
-    visit(asts) {
-        //This will overlap with class()
-        case Declaration decl:
-            decls: += [decl];
-        case decl:\compilationUnit(_, _):
-            decls += [decl];
-        case decl:\compilationUnit(_, _, _):
-            decls += [decl];
-        case decl:\compilationUnit(_):
-            decls += [decl];
-        case decl:\enum(_, _, _, _, _):
-            decls += [decl];
-        case decl:\enumConstant(_, _, _, _):
-            decls += [decl];
-        case decl:\enumConstant(_, _, _):
-            decls += [decl];
-        case decl:\class(_, _, _, _, _, _):
-            decls += [decl];
-        case decl:\class(_):
-            decls += [decl];
-        case decl:\interface(_, _, _, _, _, _):
-            decls += [decl];
-        case decl:\field(_, _, _):
-            decls += [decl];
-        case decl:\initializer(_, _):
-            decls += [decl];
-        case decl:\method(_, _, _, _, _, _, _):
-            decls += [decl];
-        case decl:\method(_, _, _, _, _, _):
-            decls += [decl];
-        case decl:\constructor(_, _, _, _, _):
-            decls += [decl];
-        case decl:\import(_, _):
-            decls += [decl];
-        case decl:\importOnDemand(_, _):
-            decls += [decl];
-        case decl:\package(_, _):
-            decls += [decl];
-        case decl:\variables(_, _, _):
-            decls += [decl];
-        case decl:\variable(_, _):
-            decls += [decl];
-        case decl:\variable(_, _, _):
-            decls += [decl];
-        case decl:\typeParameter(_, _):
-            decls += [decl];
-        case decl:\annotationType(_, _, _):
-            decls += [decl];
-        case decl:\annotationTypeMember(_, _, _):
-            decls += [decl];
-        case decl:\annotationTypeMember(_, _, _, _):
-            decls += [decl];
-        // This will create duplicate covered lines with method()
-        case decl:\parameter(_, _, _, _):
-            decls += [decl];
-        case decl:\dimension(_):
-            decls += [decl];
-        case decl:\vararg(_, _, _):
-            decls += [decl];
+    if (size(children1) != size(children2)) {
+        return false;
     }
-    return decls;
+
+    for (int i <- [0 .. size(children1)]) {
+        value child1 = children1[i];
+        for (int j <- [0 .. size(children1)]){
+            value child2 = children2[j];
+            if(!deepEquals(child1, child2)){
+                return false;
+            }
+        }
+    }
+
+    return true;
+
+}
+
+int hashSubTree(node subTree){
+    int hash = 0;
+    list[value] children = getChildren(subTree);
+
+    list[Expression] exprs =[];
+
+    for (value child <- children) {
+        switch (child) {
+            case Statement stmts: \block(statements):{
+                for(Statement stmt <- stmts){
+                    //give a rating for each statement
+                    hash = hash + 1;
+
+                }
+            }
+            case Statement stmt:
+                println("Statement: <stmt>");
+            case Declaration decl:
+                println("Declaration: <decl>");
+            case Expression expr:{
+                println("Expression: <expr>");
+                exprs += [expr];
+            }
+        }
+    }
+
+    return hash;
+}
+
+list[node] collectNodes(list[Declaration] asts) {
+    list[node] nodes = [];
+    visit(asts) {        
+        case Declaration decl:{
+            nodes += [decl];
+            println("keywords decl: <getName(decl)>");
+        }
+        case Statement stmt:{
+            nodes += [stmt];
+            println("keywords stmt: <getName(stmt)>");
+
+        }
+        case Expression expr:{
+            nodes += [expr];
+            println("keywords expr: <getName(expr)>");
+
+        }
+    }
+    return nodes;
+}
+
+list[Declaration] collectUnits(list[Declaration] asts){
+    list[Declaration] units = [];
+    visit(asts){
+        case unit:\method(_,_,_,_,_,_):
+            units += [unit];
+        case unit:\method(_,_,_,_,_,_,_):
+            units += [unit];
+    }
+    return units;
+}
+
+int getMass(Declaration decl){
+    return decl.src.end.line - decl.src.begin.line + 1;
 }
 
 list[Statement] collectStatements(list[Declaration] asts) {
     list[Statement] subtrees = [];
     visit(asts) {
-        case sub:\Statement: 
-            subtrees += [sub];
-        case sub:\assert(_, _):
-           subtrees += [sub];        
-        case sub:\block(_): 
-            subtrees += [sub];
-        case sub:\break(): 
-            subtrees += [sub];
-        case sub:\break(_): 
-            subtrees += [sub];
-        case sub:\continue(): 
-            subtrees += [sub];
-        case sub:\continue(_): 
-            subtrees += [sub];
-        case sub:\do(_, _): 
-            subtrees += [sub];
-        case sub:\empty(): 
-            subtrees += [sub];
-        case sub:\foreach(_, _, _): 
-            subtrees += [sub];
-        case sub:\for(_, _, _, _): 
-            subtrees += [sub];
-        case sub:\for(_, _, _): 
-            subtrees += [sub];
-        case sub:\if(_, _): 
-            subtrees += [sub];
-        case sub:\if(_, _, _): 
-            subtrees += [sub];
-        case sub:\label(_, _): 
-            subtrees += [sub];
-        case sub:\return(_): 
-            subtrees += [sub];
-        case sub:\return(): 
-            subtrees += [sub];
-        case sub:\switch(_, _): 
-            subtrees += [sub];
-        case sub:\case(_): 
-            subtrees += [sub];
-        case sub:\caseRule(_): 
-            subtrees += [sub];
-        case sub:\defaultCase(): 
-            subtrees += [sub];
-        case sub:\synchronizedStatement(_, _): 
-            subtrees += [sub];
-        case sub:\throw(_): 
-            subtrees += [sub];
-        case sub:\try(_, _): 
-            subtrees += [sub];
-        case sub:\try(_, _, _): 
-            subtrees += [sub];
-        case sub:\catch(_, _): 
-            subtrees += [sub];
-        case sub:\declarationStatement(_): 
-            subtrees += [sub];
-        case sub:\while(_, _): 
-            subtrees += [sub];
-        case sub:\expressionStatement(_): 
-            subtrees += [sub];
-        case sub:\constructorCall(_, _): 
-            subtrees += [sub];
-        case sub:\superConstructorCall(_, _, _): 
-            subtrees += [sub];
-        case sub:\superConstructorCall(_, _): 
-            subtrees += [sub];
-        case sub:\yield(_): 
-            subtrees += [sub];
+        case Statement stmt: 
+            subtrees += [stmt];
     }
     return subtrees;
 }

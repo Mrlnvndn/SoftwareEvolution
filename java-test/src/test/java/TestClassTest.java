@@ -16,7 +16,7 @@ public class TestClassTest {
     @Test
     public void testSetValue() {
         TestClass testClass = new TestClass(5);
-        testClass.setValue(10);
+        testClass.setValue(testClass.getValue());
         assertEquals(10, testClass.getValue());
     }
 }

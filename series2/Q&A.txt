@@ -1,0 +1,21 @@
+What should it return?
+    duplicate pairs
+
+
+Should  you go over the asts 3 times? (for each duplication level once?)
+    Yes
+
+using rolling hash?
+    yes
+
+How to check if a node is a leaf node?
+    children is empty
+
+How to get a list of all attributes of Nodes, even without knowing the type?
+
+how to get type of a node, or statement/declaration/expression?
+
+bin size?
+    b = 0.1N
+
+What is n?
