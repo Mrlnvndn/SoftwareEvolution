@@ -20,8 +20,8 @@ public class TestClass2 {
         this.value = value;
     }
 
-    public boolean isCurrentValue(int value) {
-        if (this.value == value) {
+    public boolean isCurrentValue2(int value) {
+        if (this.value != value) {
             return true;
         } else {
             return false;

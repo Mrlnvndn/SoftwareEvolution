@@ -107,7 +107,7 @@ compilationUnit(
                                     ],
                                     src=|java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
                                 ),
-                                src=|java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
+                                src=|java+compilationUnit:///../java-test/src/test/java/TestFvClassTest.java|(272,39,<11,8>,<11,47>)
                             ),
                             expressionStatement(
                                 methodCall(

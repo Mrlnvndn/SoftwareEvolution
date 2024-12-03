@@ -12,10 +12,34 @@ How to check if a node is a leaf node?
     children is empty
 
 How to get a list of all attributes of Nodes, even without knowing the type?
+    getAnnotations()?
 
 how to get type of a node, or statement/declaration/expression?
+    getName()
 
 bin size?
     b = 0.1N
 
 What is n?
+
+
+type I: hash based on the name as well as properties
+
+type II: hash based on structure, then deep compare using properties
+
+type III: use similarityIndex and bins
+
+remove duplicate subtrees after you have the clone classes
+
+    Type 3: you need to be aware of the exact location of the clone, to see if all subclones occur with the same subclones
+
+    first get all clone classes and clone pairs
+    then go through all clone classe and check if a class is a subset of another class.
+        for each pair you match, even if the whole class is not a subset, you can remove them from clone pairs
+        (this way you only go through all clones once)
+
+
+        check if node is subtree of another node by looking into src. Compare the start line and end line. There might be a fucntion in rascal for this
+        
+
+
