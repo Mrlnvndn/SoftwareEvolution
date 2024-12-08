@@ -3,7 +3,6 @@ public class TestClass2 {
     private int value;
 
     public TestClass2(int value) {
-
         if (value == 0) {
             throw new IllegalArgumentException("Value cannot be zero");
         } else {
@@ -12,7 +11,6 @@ public class TestClass2 {
     }
 
     public int getValue() {
-
         return value;
     }
 
@@ -20,11 +18,11 @@ public class TestClass2 {
         this.value = value;
     }
 
-    public boolean isCurrentValue2(int value) {
+    public boolean isCurrentValue(int value) {
         if (this.value != value) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 

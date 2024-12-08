@@ -26,8 +26,13 @@ What is n?
 type I: hash based on the name as well as properties
 
 type II: hash based on structure, then deep compare using properties
+    
 
 type III: use similarityIndex and bins
+    1. use a simple, naive, hashing function to divide the trees into bins.'
+    2. use a similarityIndex to compare subtrees in the same bin.
+
+    
 
 remove duplicate subtrees after you have the clone classes
 
@@ -40,6 +45,6 @@ remove duplicate subtrees after you have the clone classes
 
 
         check if node is subtree of another node by looking into src. Compare the start line and end line. There might be a fucntion in rascal for this
-        
+
 
 

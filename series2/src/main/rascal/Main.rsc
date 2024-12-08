@@ -9,52 +9,82 @@ import String;
 import Map;
 import Node;
 import Location;
+import util::Math;
 
 loc testProject = |cwd:///../java-test|;
 loc smallProject = |cwd:///../smallsql0.21_src/smallsql0.21_src/|;
 loc largeProject = |cwd:///../hsqldb-2.3.1/hsqldb-2.3.1/|;
 
 loc outputFile = |cwd:///output.txt|;
-int massTreshold = 10;
+int massTreshold = 15;
 int numBuckets = 0;
 
 //key:bucket hash, value: node (subtree)
 map[int, list[node]] buckets = ();
-//key: subtree hash, value: node (subtree)
+//For type II, key: subtree hash, value: node (subtree)
 map[int, list[node]] nodeHashMap = ();
-//key: subtree hash, value: node (subtree)
+//For type I, key: subtree hash, value: node (subtree)
 map[node, list[node]] nodeMap = ();
-    //list of node lists for each clone class
+//list of node lists for each clone class
 list[list[node]] cloneClasses = [];
-//list of node tuples for each clone pair
-list[tuple[node, node]] clonePairs = [];
+//list of node lists for each clone pair
+list[list[node]] clonePairs =[];
+
 
 int main(int testArgument=0) {
     list[Declaration] asts  = (getASTs(testProject));
 
     getTypeIClones(asts);
-
+    printCloneClasses();
+    getTypeIIClones(asts);
+    printCloneClasses();
+    getTypeIIIClones(asts);
+    printClonePairs();
     return testArgument;
 }
 
+list[Declaration] getASTs(loc projectLocation) {
+    M3 model = createM3FromMavenProject(projectLocation);
+    list[Declaration] asts = [createAstFromFile(f, true)
+        | f <- files(model.containment), isCompilationUnit(f)];
+    return asts;
+}
+
+//Type I
 void getTypeIClones(list[Declaration] asts){
     for(Declaration ast <- asts){
-        visit(ast){
-            case node n:{
-                if(getMass(n) >= massTreshold){
-                    unsetN = unsetRec(n);
-                    if (unsetN in nodeMap) {
-                        nodeMap[unsetN] += [n];
-                    } else {
-                        nodeMap[unsetN] = [n];
-                    }
-                }
-            }
-        }
+        fillNodeMap(ast);
     }
 
     cloneClasses =  [ class |list[node] class <- range(nodeMap), size(class) > 1];
     removeSubClones();
+    println(size(cloneClasses));
+}
+
+void fillNodeMap(Declaration ast){
+    visit(ast){
+        case node n:{
+            if(getMass(n) >= massTreshold){
+                unsetN = unsetRec(n);
+                if (unsetN in nodeMap) {
+                    nodeMap[unsetN] += [n];
+                } else {
+                    nodeMap[unsetN] = [n];
+                }
+            }
+        }
+    }
+}
+
+void getTypeIIClones(list[Declaration] asts){
+    //fill nodeHashMap
+    for(Declaration ast <- asts){
+        fillNodeHashMap(ast);
+    }
+
+    cloneClasses = [ class | list[node] class <- range(nodeHashMap), size(class) > 1];
+    removeSubClones();
+    println(size(cloneClasses));
 }
 
 void removeSubClones(){
@@ -116,23 +146,25 @@ loc getLoc(node n){
     throw "no loc found";
 }
 
-// 
-void getTypeIIClones(list[Declaration] asts){
-    //fill nodeHashMap
+void getTypeIIIClones(list[Declaration] asts){
+
     for(Declaration ast <- asts){
-        computeSubTreeHash(ast); 
+        fillBins(ast);
     }
-}
-//
-void getTypeIIIClones(){
-
-}
-
-list[Declaration] getASTs(loc projectLocation) {
-    M3 model = createM3FromMavenProject(projectLocation);
-    list[Declaration] asts = [createAstFromFile(f, true)
-        | f <- files(model.containment), isCompilationUnit(f)];
-    return asts;
+    
+    //compare all nodes in the same bin with each other
+    for(list[node] bin <- range(buckets)){
+        for(int i <- [0 .. (size(bin) -1)]){
+            node n1 = bin[i];
+            for (int j <- [i+1 .. size(bin)]){
+                node n2 = bin[j];
+                if(similarity(n1,n2) > 0.9){
+                    clonePairs += [n1, n2];
+                }
+            }
+        }
+    }
+    println(size(clonePairs));
 }
 
 bool areSubTreesEqual(node node1, node node2){
@@ -142,7 +174,7 @@ bool areSubTreesEqual(node node1, node node2){
 list[list[value]] detectCodeClones(list[Declaration] asts){
     
     for(Declaration ast <- asts){
-        computeSubTreeHash(ast); 
+        fillNodeHashMap(ast); 
     }
 
     println("size: <size(nodeHashMap)>");
@@ -154,17 +186,18 @@ list[list[value]] detectCodeClones(list[Declaration] asts){
      return duplication;
 }
 
-int computeSubTreeHash(node tree){
-    int treeHash;
+//Fill node hash map using a rolling hash function
+int fillNodeHashMap(node tree){
+    int treeHash = 0;
 
-    list[node] children = getAllChildren(tree);
+    list[node] children = getAllNodeChildren(tree);
 
     if (children == []){
-        treeHash = computeHash(tree, []);
+        treeHash = computeHash(tree, [], true);
     }
     else {
-        childHashes = [computeSubTreeHash(child) | node child <- children];
-        treeHash = computeHash(tree, childHashes);
+        childHashes = [fillNodeHashMap(child) | node child <- children];
+        treeHash = computeHash(tree, childHashes, true);
     }
 
     //get better value for tree mass treshold
@@ -178,7 +211,7 @@ int computeSubTreeHash(node tree){
     return treeHash;
 }
 
-list[node] getAllChildren(node tree){
+list[node] getAllNodeChildren(node tree){
     list[value] valueChildren = getChildren(tree);
     list[node] nodeChildren =[];
     for(value child <- valueChildren){
@@ -194,11 +227,14 @@ list[node] getAllChildren(node tree){
 }
 
 //This needs to be refined
-int computeHash(node currentNode, list[int] childHashes){
+int computeHash(node currentNode, list[int] childHashes, bool useProperties){
     int base = 31;
     int prime = 1000000007;
 
-    list[value] properties = getProperties(currentNode);
+    list[value] properties = [];
+    if(useProperties){
+        properties = getProperties(currentNode);
+    }
 
     int treeHash = polynomialHash(getName(currentNode), properties);
 
@@ -225,12 +261,13 @@ list[value] getProperties(node tree){
     return properties;
 }
 
-int polynomialHash(str nodeName, list[value] properties, bool hashProperties = false, int base = 31, int prime = 1000000007) {
+int polynomialHash(str nodeName, list[value] properties, int base = 31, int prime = 1000000007) {
     int hashValue = 0;
     for (int c <- chars(nodeName)) {
         hashValue = (hashValue * base + c) % prime;
     }
-    if(hashProperties){
+    //id nodes contain the names for variables, methods, etc. which should be ignored for type II and III.
+    if(nodeName != "id"){
         for (value prop <- properties) {
             switch (prop) {
             case int i:
@@ -254,24 +291,24 @@ int polynomialHash(str nodeName, list[value] properties, bool hashProperties = f
     return hashValue;
 }
 
-list[tuple[node, node]] findClonePairs( map[int, list[node]] buckets){
-    list[tuple[node, node]] pairs = [];
-    list[list[node]] bucketsValues = toList(range(buckets));
-    //Compare all nodes in the same bucket
-    for (int i <- [ 0 .. size(bucketsValues)]){
-        list[node] bucket = bucketsValues[i];
-        for(int j <- [0 .. size(bucket) - 1]){
-            for(int k <- [j + 1 .. size(bucket)]){
-                node node1 = bucket[j];
-                node node2 = bucket[k];
-                // Ensure structural equality
-                if(deepEquals(node1, node2)){ // Ensure structural equality
-                    pairs += [<node1, node2>];
-                }
-            }
+void printClonePairs(){
+    for(list[node] clonePair <- clonePairs){
+        for(node n <- clonePair){
+            loc l = getLoc(n);
+            println("name: <getName(n)>, loc: <l>");
         }
+        println("-------------------------");
     }
-    return pairs;
+}
+
+void printCloneClasses(){
+    for(list[node] cloneClass <- cloneClasses){
+        for(node n <- cloneClass){
+            loc l = getLoc(n);
+            println("name: <getName(n)>, loc: <l>");
+        }
+        println("-------------------------");
+    }
 }
 
 bool deepEquals(node node1, node node2){
@@ -285,7 +322,7 @@ bool deepEquals(node node1, node node2){
             return false;
         }
 
-        for (int i <- [0 .. size(properties1) - 1]) {
+        for (int i <- [0 .. size(properties1)]) {
             if (properties1[i] != properties2[i]) {
                 return false;
             }
@@ -317,23 +354,11 @@ bool deepEquals(node node1, node node2){
 }
 
 //Deprecated
-list[node] collectNodes(list[Declaration] asts) {
-    list[node] nodes = [];
-    visit(asts) {        
-        case Declaration decl:{
-            nodes += [decl];
-            println("keywords decl: <getName(decl)>");
-        }
-        case Statement stmt:{
-            nodes += [stmt];
-            println("keywords stmt: <getName(stmt)>");
-
-        }
-        case Expression expr:{
-            nodes += [expr];
-            println("keywords expr: <getName(expr)>");
-
-        }
+set[node] collectNodes(node tree) {
+    set[node] nodes = {};
+    visit(tree) {        
+        case node n:
+            nodes += n;
     }
     return nodes;
 }
@@ -349,6 +374,64 @@ list[Declaration] collectUnits(list[Declaration] asts){
     return units;
 }
 
+int fillBins(node tree){
+    int treeHash = 0;
+    int treeMass = getMass(tree);
+    list[node] children = getAllNodeChildren(tree);
+
+    //if the node is a leaf node, give it a hash value of 1 so it does not impact the hash value 
+    if (children == []){
+        return 1;
+    }
+    else {
+        childHashes = [fillBins(child) | node child <- children];
+        //also ignore properties, to get a more generic hash
+        treeHash = computeHash(tree, childHashes, false);
+    }
+
+    //get better value for tree mass treshold
+    if(treeMass >= massTreshold){
+        if (treeHash in buckets) {
+            buckets[treeHash] += [tree];
+        } else {
+            buckets[treeHash] = [tree];
+        }
+    }
+    return treeHash;
+}
+
+real similarity(node n1, node n2) {
+    real sharedNodes = 0.0;
+    real uniqueInN1 = 0.0;
+    real uniqueInN2 = 0.0;
+    
+    set[node] nodesInN2 = collectNodes(n2);
+
+    visit(n1) {
+        case node child1: {
+            bool found = false;
+            for (node child2 <- nodesInN2) {
+                if (deepEquals(child1, child2)) {
+                    sharedNodes += 1.0;
+                    nodesInN2 -= child2;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                uniqueInN1 += 1.0;
+            }
+        }
+    }
+
+    uniqueInN2 += toReal(size(nodesInN2));
+    real similarity = 2 * sharedNodes / (2 * sharedNodes + uniqueInN1 + uniqueInN2);
+
+    println(similarity);
+    return similarity;
+}
+
+//Calculate mass 
 int getMass(node tree){
     int numberOfNodes = 0;
     visit(tree){
