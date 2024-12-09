@@ -19,7 +19,7 @@ loc outputFile = |cwd:///output.txt|;
 int massTreshold = 15;
 int numBuckets = 0;
 
-//key:bucket hash, value: node (subtree)
+//For type III, key:bucket hash, value: node (subtree)
 map[int, list[node]] buckets = ();
 //For type II, key: subtree hash, value: node (subtree)
 map[int, list[node]] nodeHashMap = ();
@@ -34,10 +34,10 @@ list[list[node]] clonePairs =[];
 int main(int testArgument=0) {
     list[Declaration] asts  = (getASTs(testProject));
 
-    getTypeIClones(asts);
-    printCloneClasses();
-    getTypeIIClones(asts);
-    printCloneClasses();
+    // getTypeIClones(asts);
+    // printCloneClasses();
+    // getTypeIIClones(asts);
+    // printCloneClasses();
     getTypeIIIClones(asts);
     printClonePairs();
     return testArgument;
@@ -153,13 +153,15 @@ void getTypeIIIClones(list[Declaration] asts){
     }
     
     //compare all nodes in the same bin with each other
+    println("number of buckets: <size(buckets)>");
     for(list[node] bin <- range(buckets)){
+        println("bin size: <size(bin)>");
         for(int i <- [0 .. (size(bin) -1)]){
             node n1 = bin[i];
             for (int j <- [i+1 .. size(bin)]){
                 node n2 = bin[j];
                 if(similarity(n1,n2) > 0.9){
-                    clonePairs += [n1, n2];
+                    clonePairs += [[n1, n2]];
                 }
             }
         }
@@ -355,10 +357,12 @@ bool deepEquals(node node1, node node2){
 
 //Deprecated
 set[node] collectNodes(node tree) {
+
     set[node] nodes = {};
-    visit(tree) {        
-        case node n:
+    visit(unsetRec(tree)) {        
+        case node n:{
             nodes += n;
+        }
     }
     return nodes;
 }
@@ -381,6 +385,7 @@ int fillBins(node tree){
 
     //if the node is a leaf node, give it a hash value of 1 so it does not impact the hash value 
     if (children == []){
+        println("leafNode check: <tree>");
         return 1;
     }
     else {
@@ -401,30 +406,35 @@ int fillBins(node tree){
 }
 
 real similarity(node n1, node n2) {
+    unsetRec(n1);
+    println("n1 src: <getLoc(n1)>");
+    println("n2 src: <getLoc(n2)>");
+
     real sharedNodes = 0.0;
     real uniqueInN1 = 0.0;
     real uniqueInN2 = 0.0;
     
     set[node] nodesInN2 = collectNodes(n2);
+    set[node] nodesInN1 = collectNodes(n1);
 
-    visit(n1) {
-        case node child1: {
-            bool found = false;
-            for (node child2 <- nodesInN2) {
-                if (deepEquals(child1, child2)) {
-                    sharedNodes += 1.0;
-                    nodesInN2 -= child2;
-                    found = true;
-                    break;
-                }
+    for(node child1 <- nodesInN1) {
+        bool found = false;
+        for (node child2 <- nodesInN2) {
+            if (unsetRec(child1) == unsetRec(child2)) {
+                sharedNodes += 1.0;
+                //remove the node, so it wont be matched multiple times
+                nodesInN2 -= child2;
+                found = true;
+                break;
             }
-            if (!found) {
-                uniqueInN1 += 1.0;
-            }
+        }
+        if (!found) {
+            uniqueInN1 += 1.0;
         }
     }
 
     uniqueInN2 += toReal(size(nodesInN2));
+    println("sharedNodes: <sharedNodes>, uniqueInN1: <uniqueInN1>, uniqueInN2: <uniqueInN2>");
     real similarity = 2 * sharedNodes / (2 * sharedNodes + uniqueInN1 + uniqueInN2);
 
     println(similarity);

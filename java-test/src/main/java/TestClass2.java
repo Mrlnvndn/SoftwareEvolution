@@ -19,10 +19,11 @@ public class TestClass2 {
     }
 
     public boolean isCurrentValue(int value) {
-        if (this.value != value) {
-            return false;
-        } else {
+        if (this.value == value) {
             return true;
+        } else {
+            int i = 0;
+            return false;
         }
     }
 
