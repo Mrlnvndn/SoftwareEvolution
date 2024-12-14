@@ -1,11 +1,18 @@
 // FILE: series1/java-test/src/main/java/TestClass.java
-public class TestClass {
+public class TestClass1 {
     private int value;
 
-    public TestClass(int value) {
-
+    public TestClass1(int value) {
         if (value == 0) {
             throw new IllegalArgumentException("Value cannot be zero");
+        } else {
+            this.value = value;
+        }
+    }
+
+    public void f(int value) {
+        if (value == 1) {
+            throw new IllegalArgumentException("Value cannot be one");
         } else {
             this.value = value;
         }
@@ -34,18 +41,19 @@ public class TestClass {
         } else if (this.value < value) {
             return "larger";
         } else {
-            test22();
+            test1();
             return "smaller";
         }
     }
 
-    public void test22() {
-        if (true) {
-            System.out.println("This will never be printed");
-        } else if (false) {
-            System.out.println("This will never be printed");
+    public void test1() {
+        double randomValue = Math.random();
+        if (randomValue < 0.33) {
+            System.out.println("This will be printed 30% of the time");
+        } else if (randomValue < 0.66) {
+            System.out.println("This will be printed 30% of the time");
         } else {
-            System.out.println("This will never be printed");
+            System.out.println("This will be printed 30% of the time");
         }
     }
 }

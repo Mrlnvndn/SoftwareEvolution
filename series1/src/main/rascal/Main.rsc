@@ -80,7 +80,6 @@ void analyzeProject(str projectName, loc projectLocation) {
     println("Overall Maintainability Rating: <overalMaintainabilityRating>");
     println("--------------------------------------------");
     println();
-
 }
 
 list[Declaration] getASTs(loc projectLocation) {

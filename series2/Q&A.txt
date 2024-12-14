@@ -48,3 +48,7 @@ remove duplicate subtrees after you have the clone classes
 
 
 
+argue why we do/dont use methods as constructors
+
+
+Can you remove subclones from type III clone classes?

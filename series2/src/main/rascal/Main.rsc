@@ -3,6 +3,7 @@ module Main
 import lang::java::m3::Core;
 import lang::java::m3::AST;
 import IO;
+import DateTime;
 import List;
 import Set;
 import String;
@@ -11,36 +12,106 @@ import Node;
 import Location;
 import util::Math;
 
+//LOCATIONS
 loc testProject = |cwd:///../java-test|;
 loc smallProject = |cwd:///../smallsql0.21_src/smallsql0.21_src/|;
 loc largeProject = |cwd:///../hsqldb-2.3.1/hsqldb-2.3.1/|;
-
 loc outputFile = |cwd:///output.txt|;
-int massTreshold = 15;
-int numBuckets = 0;
 
-//For type III, key:bucket hash, value: node (subtree)
-map[int, list[node]] buckets = ();
-//For type II, key: subtree hash, value: node (subtree)
-map[int, list[node]] nodeHashMap = ();
-//For type I, key: subtree hash, value: node (subtree)
-map[node, list[node]] nodeMap = ();
-//list of node lists for each clone class
-list[list[node]] cloneClasses = [];
+//Parameters
+int massTreshold = 10;
+int ignoreSubtreeTreshold = 5;
+real similarityTreshold = 0.8;
+
+//For type II and III, key: node (subtree) hash, value: node (subtree)
+map[int, set[node]] nodeHashMap = ();
+//For type I, key: node (subtree) without location properties, value: node (subtree) with location properties
+map[node, set[node]] nodeMap = ();
 //list of node lists for each clone pair
-list[list[node]] clonePairs =[];
+list[set[node]] clonePairs =[];
+
+void main() {
+    println("start time: <now()>");
+    evaluateProjectCodeDuplication("Large Project", largeProject);
+    println("end time: <now()>");
+
+}
+
+void evaluateProjectCodeDuplication(str projectName, loc projectLocation){
+
+    list[Declaration] asts  = (getASTs(projectLocation));
+    int totalLoc = getTotalLinesOfCode(asts);
+
+    list[set[node]] cloneClasses = [];
+    bool showExamples = false;
+    println(projectName);
+
+    if(projectName == "testProject")
+        showExamples = true;
+
+    // cloneClasses = getTypeIClones(asts);
+    // println("number of type I clone classes: <size(cloneClasses)>");
+
+    // cloneClasses = getTypeIIClones(asts);
+    // //analyseCloneClasses(cloneClasses, totalLoc, showExamples);
+    // println("number of type II clone classes: <size(cloneClasses)>");
 
 
-int main(int testArgument=0) {
-    list[Declaration] asts  = (getASTs(testProject));
+    cloneClasses = getTypeIIIClones(asts);
+    println("number of type III clone classes: <size(cloneClasses)>");
 
-    // getTypeIClones(asts);
-    // printCloneClasses();
-    // getTypeIIClones(asts);
-    // printCloneClasses();
-    getTypeIIIClones(asts);
-    printClonePairs();
-    return testArgument;
+}
+
+void analyseCloneClasses(list[set[node]]  cloneClasses, int totalLoc, bool showExamples){
+
+    //print % of duplicated lines
+    //print biggest clone (in lines)
+    calcDupLinePctAndLargestClone(cloneClasses, totalLoc);
+
+    //print # of clone classes
+    println("Number of clone classes: <size(cloneClasses)>");
+
+    //print biggest clone class (in members)
+    findBiggestCloneClass(cloneClasses);
+
+    //print example clones
+    if(showExamples){
+        printClones(cloneClasses);
+   }
+
+}
+
+void calcDupLinePctAndLargestClone(list[set[node]] cloneClasses, int totalLoc) {
+    set[str] dupLines = {};
+    int largestCloneSize = -1;
+    node largestClone;
+    for (set[node] cloneClass <- cloneClasses) {
+        for (node n <- toList(cloneClass)) {
+            loc nLoc = getLoc(n);
+            if ((nLoc.end.line - nLoc.begin.line) + 1 > largestCloneSize) {
+                largestClone = n;
+                largestCloneSize = nLoc.end.line - nLoc.begin.line;
+            }
+            for (int lineNr <- [nLoc.begin.line .. nLoc.end.line + 1]) {
+                dupLines += "<nLoc.uri><lineNr>";
+            }
+        }
+    }
+    println("Duplicate line Percentage: <size(dupLines) / totalLoc>");
+    println();
+    println("Biggest clone: <largestClone>");
+}
+
+void findBiggestCloneClass(list[set[node]] cloneClasses){
+    set[node] biggestCloneClass = cloneClasses[0];
+
+    for(set[node] cloneClass <- cloneClasses){
+        if(size(cloneClass) > size(biggestCloneClass)){
+            biggestCloneClass = cloneClass;
+        }
+    }
+    println("Biggest clone class: ");
+    printClones([biggestCloneClass]);
 }
 
 list[Declaration] getASTs(loc projectLocation) {
@@ -50,15 +121,22 @@ list[Declaration] getASTs(loc projectLocation) {
     return asts;
 }
 
+int getTotalLinesOfCode(list[Declaration] asts){
+    return sum([file.src.end.line | Declaration file <- asts]);
+}
+
 //Type I
-void getTypeIClones(list[Declaration] asts){
+list[set[node]] getTypeIClones(list[Declaration] asts){
+
+    nodeMap = ();
+
     for(Declaration ast <- asts){
         fillNodeMap(ast);
     }
 
-    cloneClasses =  [ class |list[node] class <- range(nodeMap), size(class) > 1];
-    removeSubClones();
-    println(size(cloneClasses));
+    list[set[node]] cloneClasses =  [ class |set[node] class <- range(nodeMap), size(class) > 1];
+
+    return removeSubClones(cloneClasses);
 }
 
 void fillNodeMap(Declaration ast){
@@ -67,62 +145,69 @@ void fillNodeMap(Declaration ast){
             if(getMass(n) >= massTreshold){
                 unsetN = unsetRec(n);
                 if (unsetN in nodeMap) {
-                    nodeMap[unsetN] += [n];
+                    nodeMap[unsetN] += {n};
                 } else {
-                    nodeMap[unsetN] = [n];
+                    nodeMap[unsetN] = {n};
                 }
             }
         }
     }
 }
 
-void getTypeIIClones(list[Declaration] asts){
-    //fill nodeHashMap
+list[set[node]] getTypeIIClones(list[Declaration] asts){
+
+    nodeHashMap = ();
+
     for(Declaration ast <- asts){
         fillNodeHashMap(ast);
     }
 
-    cloneClasses = [ class | list[node] class <- range(nodeHashMap), size(class) > 1];
-    removeSubClones();
-    println(size(cloneClasses));
+    list[set[node]] cloneClasses = [ class | set[node] class <- range(nodeHashMap), size(class) > 1];
+
+    return removeSubClones(cloneClasses);
 }
 
-void removeSubClones(){
-    list[list[node]] duplicateSubClasses = [];
-    int classSize = size(cloneClasses);
-    for(int i <- [0 .. classSize]){
-        list[node] c1 = cloneClasses[i];
-        for(int j <- [0 .. classSize]){
-            //dont compare the same class to eachother
-            if(i != j){
-                list[node] c2 = cloneClasses[j];
-                //Check that for every node in c1, there is at least one node in c2 of which it is a subtree
-                bool isSubNode = true;
-                for (node n1 <- c1) {
-                    bool found = false;
-                    for (node n2 <- c2) {
-                        //check if n1 is a subtree of n2
-                        if (isSubtreeOf(n1, n2)) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    //if one node in c1 is not a subtree of any node in c2, mark it as not a subClass
-                    if (!found) {
-                        isSubNode = false;
-                        break;
-                    }
-                }
-                // if one node is not a subtree isSubtree is false and 
-                if (isSubNode) {
-                    duplicateSubClasses += [c1];
+list[set[node]] removeSubClones(list[set[node]] clones) {
+    println("subclone removal started now: <now()>");
+    
+    // Sort clones by size in descending order to prioritize larger clones
+    list[set[node]] sortedClones = sort(clones, bool(set[node] a, set[node] b) { return (size(a) > size(b)); });
+
+    
+    // Initialize a set to keep track of clones to remove
+    set[set[node]] clonesToRemove = {};
+
+    map[int, list[set[node]]] sizeToClones = ();
+
+    // Precompute a map from size to clone classes for efficient lookup
+    for(set[node] cloneClass <- sortedClones){
+        sizeToClones[size(cloneClass)] = (size(cloneClass) in sizeToClones ? sizeToClones[size(cloneClass)] + [cloneClass] : [cloneClass]);
+    }
+    
+    // Iterate over each clone class
+    for (set[node] c1 <- sortedClones) {
+        if (c1 in clonesToRemove) continue; // Skip if already marked for removal
+        
+        // Find potential super clone classes where size(c2) divides size(c1)
+        list[int] possibleSizes = [s | int s <- domain(sizeToClones), size(c1) % s == 0];
+        
+        // Iterate over potential sizes to find super clones
+        for (int s <- possibleSizes) {
+            for (set[node] c2 <- sizeToClones[s]) {
+                if (all(n1 <- c1, any(n2 <- c2, isSubtreeOf(n1, n2)))) {
+                    clonesToRemove += {c1};
+                    break; // No need to check other c2s once c1 is marked
                 }
             }
+            if (c1 in clonesToRemove) break; // Exit early if c1 is marked
         }
     }
-    for (list[node] duplicateSubClass <- duplicateSubClasses) {
-        cloneClasses = [class | class <- cloneClasses, class != duplicateSubClass];
-    }
+
+    // Filter out the clones marked for removal
+    list[set[node]] filteredClones = [c | set[node] c <- sortedClones, (c notin clonesToRemove)];
+
+    println("subclone removal finished: <now()>");
+    return filteredClones;
 }
 
 //check if n1 is a subtree of n2
@@ -138,6 +223,7 @@ bool isSubtreeOf(node n1, node n2){
     return false;
 }
 
+//Hacky way to get the .src from a node as type loc instead of value 
 loc getLoc(node n){
     switch(n.src){
         case loc l:
@@ -146,72 +232,130 @@ loc getLoc(node n){
     throw "no loc found";
 }
 
-void getTypeIIIClones(list[Declaration] asts){
+list[set[node]] getTypeIIIClones(list[Declaration] asts){
+    list[set[node]] cloneClasses = [];
 
+    list[set[node]] binClonePairs = [];
     for(Declaration ast <- asts){
-        fillBins(ast);
+        fillNodeHashMap(ast, ignoreSmallTrees=true);
     }
     
     //compare all nodes in the same bin with each other
-    println("number of buckets: <size(buckets)>");
-    for(list[node] bin <- range(buckets)){
-        println("bin size: <size(bin)>");
-        for(int i <- [0 .. (size(bin) -1)]){
-            node n1 = bin[i];
-            for (int j <- [i+1 .. size(bin)]){
-                node n2 = bin[j];
-                if(similarity(n1,n2) > 0.9){
-                    clonePairs += [[n1, n2]];
+    for(set[node] binSet <- range(nodeHashMap)){
+        list[node] binList = toList(binSet);
+        map[node,set[node]] nodeSimilarityGraph = ();
+        binClonePairs = [];
+        for(int i <- [0 .. (size(binList) -1)]){
+            node n1 = binList[i];
+            for (int j <- [i+1 .. size(binList)]){
+                node n2 = binList[j];
+                if(similarity(n1,n2) >= similarityTreshold){
+                    binClonePairs += [{n1, n2}];
+                    nodeSimilarityGraph[n1] = (n1 in nodeSimilarityGraph ? nodeSimilarityGraph[n1] + {n2} : {n2});
+                    nodeSimilarityGraph[n2] = (n2 in nodeSimilarityGraph ? nodeSimilarityGraph[n2] + {n1} : {n1});
                 }
             }
         }
+        
+        if(size(nodeSimilarityGraph) > 0){
+            cloneClasses += findMaximalCliques(nodeSimilarityGraph);
+        }
+        clonePairs += binClonePairs;
     }
-    println(size(clonePairs));
+    return removeSubClones(cloneClasses);
+}
+
+list[set[node]] bronKerboschPivot(set[node] R, set[node] P, set[node] X, map[node, set[node]] graph, list[set[node]] cliques) {
+    if (size(P) == 0 && size(X) == 0) {
+        cliques += R;
+        return cliques;
+    }
+    node u = choosePivot(P, X, graph); // pivot
+    for (node v <- P - graph[u]) {
+        cliques = bronKerboschPivot(R + v, P & graph[v], X & graph[v], graph, cliques);
+        P -= v;
+        X += v;
+    }
+    return cliques;
+}
+
+node choosePivot(set[node] P, set[node] X, map[node, set[node]] graph) {
+    node bestNode;
+    int maxNeighbors = - 1;
+    for (node u <- P + X) {
+        int neighborCount = size(P * graph[u]);
+        if (neighborCount > maxNeighbors) {
+            maxNeighbors = neighborCount;
+            bestNode = u;
+        }
+    }
+    return bestNode;
+}
+
+list[set[node]] findMaximalCliques(map[node, set[node]] graph) {
+    list[set[node]] cliques = [];
+    cliques = bronKerboschPivot({}, {n | n <- graph}, {}, graph, cliques);
+    return cliques;
 }
 
 bool areSubTreesEqual(node node1, node node2){
     return (unset(node1) == unset(node2));
 }
 
-list[list[value]] detectCodeClones(list[Declaration] asts){
-    
-    for(Declaration ast <- asts){
-        fillNodeHashMap(ast); 
-    }
-
-    println("size: <size(nodeHashMap)>");
-
-    list[list[value]] duplication = [ [ duplicate.src | duplicate <- duplicates] | list[node] duplicates <- toList(range(nodeHashMap)), size(duplicates) > 1];
-
-    println("size: <size(duplication)>");
-
-     return duplication;
-}
-
 //Fill node hash map using a rolling hash function
-int fillNodeHashMap(node tree){
+int fillNodeHashMap(node tree, bool ignoreSmallTrees = false){
     int treeHash = 0;
-
+    int treeMass = getMass(tree);
     list[node] children = getAllNodeChildren(tree);
 
-    if (children == []){
-        treeHash = computeHash(tree, [], true);
+    if (ignoreSmallTrees && treeMass < ignoreSubtreeTreshold){
+        return 1;
+    }
+    else if (children == []){
+        return computeHash(tree, [], true);
     }
     else {
-        childHashes = [fillNodeHashMap(child) | node child <- children];
+        childHashes = [fillNodeHashMap(child, ignoreSmallTrees=ignoreSmallTrees) | node child <- children];
         treeHash = computeHash(tree, childHashes, true);
     }
 
     //get better value for tree mass treshold
     if(getMass(tree) >= massTreshold){
         if (treeHash in nodeHashMap) {
-            nodeHashMap[treeHash] += [tree];
+            nodeHashMap[treeHash] += {tree};
         } else {
-            nodeHashMap[treeHash] = [tree];
+            nodeHashMap[treeHash] = {tree};
         }
     }
     return treeHash;
 }
+
+int fillBins(node tree){
+    int treeHash = 0;
+    int treeMass = getMass(tree);
+    list[node] children = getAllNodeChildren(tree);
+
+    //if the node is a leaf node, give it a hash value of 1 so it does not impact the hash value 
+    if (children == []){
+        return 1;
+    }
+    else {
+        childHashes = [fillBins(child) | node child <- children];
+        //also ignore properties, to get a more generic hash
+        treeHash = computeHash(tree, childHashes, false);
+    }
+
+    //get better value for tree mass treshold
+    if(treeMass >= massTreshold){
+        if (treeHash in nodeHashMap) {
+            nodeHashMap[treeHash] += {tree};
+        } else {
+            nodeHashMap[treeHash] = {tree};
+        }
+    }
+    return treeHash;
+}
+
 
 list[node] getAllNodeChildren(node tree){
     list[value] valueChildren = getChildren(tree);
@@ -233,10 +377,7 @@ int computeHash(node currentNode, list[int] childHashes, bool useProperties){
     int base = 31;
     int prime = 1000000007;
 
-    list[value] properties = [];
-    if(useProperties){
-        properties = getProperties(currentNode);
-    }
+    list[value] properties = useProperties ? getProperties(currentNode) : [];
 
     int treeHash = polynomialHash(getName(currentNode), properties);
 
@@ -254,8 +395,6 @@ list[value] getProperties(node tree){
                 continue;
             case list[node] nList:
                 continue;
-            case Type t:
-                println("type Type: <t>");
             default:
                 properties += [prop];
         }
@@ -268,7 +407,7 @@ int polynomialHash(str nodeName, list[value] properties, int base = 31, int prim
     for (int c <- chars(nodeName)) {
         hashValue = (hashValue * base + c) % prime;
     }
-    //id nodes contain the names for variables, methods, etc. which should be ignored for type II and III.
+    //id nodes contain the names for variables, methods, etc. which should be ignored for type II and type III hash values.
     if(nodeName != "id"){
         for (value prop <- properties) {
             switch (prop) {
@@ -280,32 +419,30 @@ int polynomialHash(str nodeName, list[value] properties, int base = 31, int prim
                 }
             case bool b:
                 hashValue = (hashValue * base + (b ? 1 : 0)) % prime;
-            case Type t:
-                println("type Type: <t>");
             default:
                 // Handle other types if necessary
                 continue;
             }
         }
     }
-    
 
     return hashValue;
 }
 
-void printClonePairs(){
-    for(list[node] clonePair <- clonePairs){
-        for(node n <- clonePair){
+void writeClones(list[set[node]] cloneGroups){
+    writeFile(|cwd:///output.txt|, "");
+    for(set[node] cloneGroup <- cloneGroups){
+        for(node n <- cloneGroup){
             loc l = getLoc(n);
-            println("name: <getName(n)>, loc: <l>");
+            appendToFile(|cwd:///output.txt|, "name: <getName(n)>, loc: <l> \n");
         }
-        println("-------------------------");
+        appendToFile(|cwd:///output.txt|, "------------------------- \n");
     }
 }
 
-void printCloneClasses(){
-    for(list[node] cloneClass <- cloneClasses){
-        for(node n <- cloneClass){
+void printClones(list[set[node]] cloneGroups){
+    for(set[node] cloneGroup <- cloneGroups){
+        for(node n <- cloneGroup){
             loc l = getLoc(n);
             println("name: <getName(n)>, loc: <l>");
         }
@@ -378,37 +515,9 @@ list[Declaration] collectUnits(list[Declaration] asts){
     return units;
 }
 
-int fillBins(node tree){
-    int treeHash = 0;
-    int treeMass = getMass(tree);
-    list[node] children = getAllNodeChildren(tree);
-
-    //if the node is a leaf node, give it a hash value of 1 so it does not impact the hash value 
-    if (children == []){
-        println("leafNode check: <tree>");
-        return 1;
-    }
-    else {
-        childHashes = [fillBins(child) | node child <- children];
-        //also ignore properties, to get a more generic hash
-        treeHash = computeHash(tree, childHashes, false);
-    }
-
-    //get better value for tree mass treshold
-    if(treeMass >= massTreshold){
-        if (treeHash in buckets) {
-            buckets[treeHash] += [tree];
-        } else {
-            buckets[treeHash] = [tree];
-        }
-    }
-    return treeHash;
-}
 
 real similarity(node n1, node n2) {
     unsetRec(n1);
-    println("n1 src: <getLoc(n1)>");
-    println("n2 src: <getLoc(n2)>");
 
     real sharedNodes = 0.0;
     real uniqueInN1 = 0.0;
@@ -434,28 +543,17 @@ real similarity(node n1, node n2) {
     }
 
     uniqueInN2 += toReal(size(nodesInN2));
-    println("sharedNodes: <sharedNodes>, uniqueInN1: <uniqueInN1>, uniqueInN2: <uniqueInN2>");
     real similarity = 2 * sharedNodes / (2 * sharedNodes + uniqueInN1 + uniqueInN2);
 
-    println(similarity);
     return similarity;
 }
 
 //Calculate mass 
 int getMass(node tree){
     int numberOfNodes = 0;
-    visit(tree){
+    visit(unsetRec(tree)){
         case node n:
             numberOfNodes += 1;
     }
     return numberOfNodes;
-}
-
-list[Statement] collectStatements(list[Declaration] asts) {
-    list[Statement] subtrees = [];
-    visit(asts) {
-        case Statement stmt: 
-            subtrees += [stmt];
-    }
-    return subtrees;
 }

@@ -1,34 +1,685 @@
-5
-name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(386,69,<19,4>,<21,5>)
-name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(382,69,<18,4>,<20,5>)
+clone pairs
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(695,228,<29,37>,<38,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(906,228,<40,37>,<49,5>)
 -------------------------
+clone classes
+clique size: 1
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(695,228,<29,37>,<38,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(906,228,<40,37>,<49,5>)
+-------------------------
+clone pairs
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(706,210,<30,8>,<37,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(917,210,<41,8>,<48,9>)
+-------------------------
+clone classes
+clique size: 1
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(706,210,<30,8>,<37,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(917,210,<41,8>,<48,9>)
+-------------------------
+clone pairs
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(719,19,<32,12>,<32,31>)
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(921,19,<41,12>,<41,31>)
+-------------------------
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(710,19,<30,12>,<30,31>)
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(921,19,<41,12>,<41,31>)
+-------------------------
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(719,19,<32,12>,<32,31>)
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(710,19,<30,12>,<30,31>)
+-------------------------
+clone classes
+clique size: 1
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(921,19,<41,12>,<41,31>)
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(719,19,<32,12>,<32,31>)
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(710,19,<30,12>,<30,31>)
+-------------------------
+clone pairs
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(778,138,<32,15>,<37,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(989,138,<43,15>,<48,9>)
+-------------------------
+clone classes
+clique size: 1
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(778,138,<32,15>,<37,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(989,138,<43,15>,<48,9>)
+-------------------------
+clone pairs
+name: variable, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(282,28,<11,18>,<11,46>)
+name: variable, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(446,28,<18,18>,<18,46>)
+-------------------------
+clone classes
+clique size: 1
+name: variable, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(282,28,<11,18>,<11,46>)
+name: variable, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(446,28,<18,18>,<18,46>)
+-------------------------
+clone pairs
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(464,45,<16,15>,<18,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(261,45,<8,15>,<10,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(464,45,<16,15>,<18,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(617,37,<25,36>,<27,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(464,45,<16,15>,<18,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(261,45,<9,15>,<11,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(464,45,<16,15>,<18,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(465,45,<18,15>,<20,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(464,45,<16,15>,<18,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(618,37,<27,36>,<29,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(261,45,<8,15>,<10,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(617,37,<25,36>,<27,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(261,45,<8,15>,<10,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(261,45,<9,15>,<11,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(261,45,<8,15>,<10,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(465,45,<18,15>,<20,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(261,45,<8,15>,<10,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(618,37,<27,36>,<29,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(617,37,<25,36>,<27,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(261,45,<9,15>,<11,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(617,37,<25,36>,<27,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(465,45,<18,15>,<20,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(617,37,<25,36>,<27,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(618,37,<27,36>,<29,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(261,45,<9,15>,<11,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(465,45,<18,15>,<20,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(261,45,<9,15>,<11,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(618,37,<27,36>,<29,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(465,45,<18,15>,<20,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(618,37,<27,36>,<29,5>)
+-------------------------
+clone classes
+clique size: 1
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(464,45,<16,15>,<18,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(261,45,<8,15>,<10,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(617,37,<25,36>,<27,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(261,45,<9,15>,<11,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(465,45,<18,15>,<20,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(618,37,<27,36>,<29,5>)
+-------------------------
+clone pairs
 name: variables, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
 name: variables, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(436,39,<18,8>,<18,47>)
 -------------------------
-name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(143,172,<5,33>,<12,5>)
+clone classes
+clique size: 1
+name: variables, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
+name: variables, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(436,39,<18,8>,<18,47>)
+-------------------------
+clone pairs
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(952,276,<40,25>,<48,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1163,276,<51,25>,<59,5>)
+-------------------------
+clone classes
+clique size: 1
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(952,276,<40,25>,<48,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1163,276,<51,25>,<59,5>)
+-------------------------
+clone pairs
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1184,75,<52,18>,<54,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1357,75,<56,15>,<58,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1184,75,<52,18>,<54,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1065,75,<43,26>,<45,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1184,75,<52,18>,<54,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1146,75,<45,15>,<47,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1184,75,<52,18>,<54,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(973,75,<41,18>,<43,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1184,75,<52,18>,<54,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1276,75,<54,26>,<56,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1357,75,<56,15>,<58,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1065,75,<43,26>,<45,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1357,75,<56,15>,<58,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1146,75,<45,15>,<47,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1357,75,<56,15>,<58,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(973,75,<41,18>,<43,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1357,75,<56,15>,<58,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1276,75,<54,26>,<56,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1065,75,<43,26>,<45,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1146,75,<45,15>,<47,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1065,75,<43,26>,<45,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(973,75,<41,18>,<43,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1065,75,<43,26>,<45,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1276,75,<54,26>,<56,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(973,75,<41,18>,<43,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1146,75,<45,15>,<47,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1276,75,<54,26>,<56,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1146,75,<45,15>,<47,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(973,75,<41,18>,<43,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1276,75,<54,26>,<56,9>)
+-------------------------
+clone classes
+clique size: 1
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1184,75,<52,18>,<54,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1357,75,<56,15>,<58,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1065,75,<43,26>,<45,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1146,75,<45,15>,<47,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(973,75,<41,18>,<43,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1276,75,<54,26>,<56,9>)
+-------------------------
+clone pairs
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(850,66,<34,15>,<37,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1061,66,<45,15>,<48,9>)
+-------------------------
+clone classes
+clique size: 1
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(850,66,<34,15>,<37,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1061,66,<45,15>,<48,9>)
+-------------------------
+clone pairs
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(931,297,<40,4>,<48,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1142,297,<51,4>,<59,5>)
+-------------------------
+clone classes
+clique size: 1
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(931,297,<40,4>,<48,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1142,297,<51,4>,<59,5>)
+-------------------------
+clone pairs
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(373,85,<14,24>,<16,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(170,85,<6,24>,<8,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(373,85,<14,24>,<16,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(170,85,<7,24>,<9,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(170,85,<6,24>,<8,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(170,85,<7,24>,<9,9>)
+-------------------------
+clone classes
+clique size: 1
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(373,85,<14,24>,<16,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(170,85,<6,24>,<8,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(170,85,<7,24>,<9,9>)
+-------------------------
+clone pairs
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1054,167,<43,15>,<47,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1265,167,<54,15>,<58,9>)
+-------------------------
+clone classes
+clique size: 1
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1054,167,<43,15>,<47,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1265,167,<54,15>,<58,9>)
+-------------------------
+clone pairs
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(346,170,<13,29>,<19,5>)
 name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(141,172,<5,32>,<12,5>)
 -------------------------
-name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(346,170,<13,29>,<19,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(143,170,<5,33>,<11,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(141,172,<5,32>,<12,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(143,170,<5,33>,<11,5>)
+-------------------------
+clone classes
+clique size: 1
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(346,170,<13,29>,<19,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(141,172,<5,32>,<12,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(143,170,<5,33>,<11,5>)
+-------------------------
+clone pairs
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(154,152,<6,8>,<10,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(154,152,<7,8>,<11,9>)
+-------------------------
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(154,152,<6,8>,<10,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(357,152,<14,8>,<18,9>)
+-------------------------
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(154,152,<7,8>,<11,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(357,152,<14,8>,<18,9>)
+-------------------------
+clone classes
+clique size: 1
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(154,152,<6,8>,<10,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(154,152,<7,8>,<11,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(357,152,<14,8>,<18,9>)
+-------------------------
+clone pairs
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(585,69,<25,4>,<27,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(586,69,<27,4>,<29,5>)
+-------------------------
+clone classes
+clique size: 1
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(585,69,<25,4>,<27,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(586,69,<27,4>,<29,5>)
+-------------------------
+clone pairs
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(524,53,<21,4>,<23,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(525,53,<23,4>,<25,5>)
+-------------------------
+clone classes
+clique size: 1
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(524,53,<21,4>,<23,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(525,53,<23,4>,<25,5>)
+-------------------------
+clone pairs
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,49,<44,12>,<44,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,49,<57,12>,<57,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,49,<44,12>,<44,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,49,<55,12>,<55,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,49,<44,12>,<44,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,49,<53,12>,<53,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,49,<44,12>,<44,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,49,<46,12>,<46,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,49,<44,12>,<44,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,49,<42,12>,<42,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,49,<57,12>,<57,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,49,<55,12>,<55,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,49,<57,12>,<57,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,49,<53,12>,<53,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,49,<57,12>,<57,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,49,<46,12>,<46,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,49,<57,12>,<57,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,49,<42,12>,<42,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,49,<55,12>,<55,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,49,<53,12>,<53,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,49,<55,12>,<55,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,49,<46,12>,<46,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,49,<55,12>,<55,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,49,<42,12>,<42,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,49,<53,12>,<53,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,49,<46,12>,<46,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,49,<53,12>,<53,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,49,<42,12>,<42,61>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,49,<46,12>,<46,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,49,<42,12>,<42,61>)
+-------------------------
+clone classes
+clique size: 1
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,49,<44,12>,<44,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,49,<57,12>,<57,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,49,<55,12>,<55,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,49,<53,12>,<53,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,49,<46,12>,<46,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,49,<42,12>,<42,61>)
+-------------------------
+clone pairs
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,48,<44,12>,<44,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,48,<57,12>,<57,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,48,<44,12>,<44,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,48,<53,12>,<53,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,48,<44,12>,<44,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,48,<46,12>,<46,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,48,<44,12>,<44,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,48,<55,12>,<55,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,48,<44,12>,<44,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,48,<42,12>,<42,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,48,<57,12>,<57,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,48,<53,12>,<53,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,48,<57,12>,<57,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,48,<46,12>,<46,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,48,<57,12>,<57,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,48,<55,12>,<55,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,48,<57,12>,<57,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,48,<42,12>,<42,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,48,<53,12>,<53,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,48,<46,12>,<46,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,48,<53,12>,<53,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,48,<55,12>,<55,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,48,<53,12>,<53,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,48,<42,12>,<42,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,48,<46,12>,<46,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,48,<55,12>,<55,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,48,<46,12>,<46,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,48,<42,12>,<42,60>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,48,<55,12>,<55,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,48,<42,12>,<42,60>)
+-------------------------
+clone classes
+clique size: 1
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,48,<44,12>,<44,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,48,<57,12>,<57,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,48,<53,12>,<53,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,48,<46,12>,<46,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,48,<55,12>,<55,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,48,<42,12>,<42,60>)
+-------------------------
+clone pairs
+name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(113,200,<5,4>,<12,5>)
+name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(114,199,<5,4>,<11,5>)
+-------------------------
+clone classes
+clique size: 1
+name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(113,200,<5,4>,<12,5>)
+name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(114,199,<5,4>,<11,5>)
+-------------------------
+clone pairs
 name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(436,39,<18,8>,<18,47>)
+name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
 -------------------------
-name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(980,75,<43,18>,<45,9>)
-name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1072,75,<45,26>,<47,9>)
-name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1153,75,<47,15>,<49,9>)
+clone classes
+clique size: 1
+name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(436,39,<18,8>,<18,47>)
+name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
 -------------------------
-5
-name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(386,69,<19,4>,<21,5>)
-name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(382,69,<18,4>,<20,5>)
+clone pairs
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,18,<10,12>,<10,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,18,<9,12>,<9,30>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,18,<10,12>,<10,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,18,<17,12>,<17,30>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,18,<10,12>,<10,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,18,<19,12>,<19,30>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,18,<10,12>,<10,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,18,<26,8>,<26,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,18,<10,12>,<10,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,18,<28,8>,<28,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,18,<9,12>,<9,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,18,<17,12>,<17,30>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,18,<9,12>,<9,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,18,<19,12>,<19,30>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,18,<9,12>,<9,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,18,<26,8>,<26,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,18,<9,12>,<9,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,18,<28,8>,<28,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,18,<17,12>,<17,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,18,<19,12>,<19,30>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,18,<17,12>,<17,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,18,<26,8>,<26,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,18,<17,12>,<17,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,18,<28,8>,<28,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,18,<19,12>,<19,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,18,<26,8>,<26,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,18,<19,12>,<19,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,18,<28,8>,<28,26>)
+-------------------------
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,18,<26,8>,<26,26>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,18,<28,8>,<28,26>)
+-------------------------
+clone classes
+clique size: 1
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,18,<10,12>,<10,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,18,<9,12>,<9,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,18,<17,12>,<17,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,18,<19,12>,<19,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,18,<26,8>,<26,26>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,18,<28,8>,<28,26>)
+-------------------------
+clone pairs
+name: less, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(993,18,<43,19>,<43,37>)
+name: less, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(782,18,<32,19>,<32,37>)
+-------------------------
+clone classes
+clique size: 1
+name: less, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(993,18,<43,19>,<43,37>)
+name: less, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(782,18,<32,19>,<32,37>)
+-------------------------
+clone pairs
+name: field, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(197,18,<7,4>,<7,22>)
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(88,18,<3,4>,<3,22>)
+-------------------------
+name: field, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(197,18,<7,4>,<7,22>)
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(87,18,<3,4>,<3,22>)
+-------------------------
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(88,18,<3,4>,<3,22>)
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(87,18,<3,4>,<3,22>)
+-------------------------
+clone classes
+clique size: 1
+name: field, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(197,18,<7,4>,<7,22>)
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(88,18,<3,4>,<3,22>)
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(87,18,<3,4>,<3,22>)
+-------------------------
+clone pairs
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,19,<28,8>,<28,27>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,19,<17,12>,<17,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,19,<28,8>,<28,27>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,19,<9,12>,<9,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,19,<28,8>,<28,27>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,19,<19,12>,<19,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,19,<28,8>,<28,27>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,<10,12>,<10,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,19,<28,8>,<28,27>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,19,<26,8>,<26,27>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,19,<17,12>,<17,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,19,<9,12>,<9,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,19,<17,12>,<17,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,19,<19,12>,<19,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,19,<17,12>,<17,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,<10,12>,<10,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,19,<17,12>,<17,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,19,<26,8>,<26,27>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,19,<9,12>,<9,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,19,<19,12>,<19,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,19,<9,12>,<9,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,<10,12>,<10,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,19,<9,12>,<9,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,19,<26,8>,<26,27>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,19,<19,12>,<19,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,<10,12>,<10,31>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,19,<19,12>,<19,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,19,<26,8>,<26,27>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,<10,12>,<10,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,19,<26,8>,<26,27>)
+-------------------------
+clone classes
+clique size: 1
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,19,<28,8>,<28,27>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,19,<17,12>,<17,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,19,<9,12>,<9,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,19,<19,12>,<19,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,<10,12>,<10,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,19,<26,8>,<26,27>)
+-------------------------
+clone pairs
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1174,258,<52,8>,<58,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(963,258,<41,8>,<47,9>)
+-------------------------
+clone classes
+clique size: 1
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1174,258,<52,8>,<58,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(963,258,<41,8>,<47,9>)
+-------------------------
+clone pairs
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(838,296,<39,4>,<49,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(662,261,<29,4>,<38,5>)
+-------------------------
+clone classes
+clique size: 1
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(838,296,<39,4>,<49,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(662,261,<29,4>,<38,5>)
+-------------------------
+clone pairs
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(185,59,<7,12>,<7,71>)
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(185,59,<8,12>,<8,71>)
+-------------------------
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(185,59,<7,12>,<7,71>)
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(388,59,<15,12>,<15,71>)
+-------------------------
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(185,59,<8,12>,<8,71>)
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(388,59,<15,12>,<15,71>)
+-------------------------
+clone classes
+clique size: 1
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(185,59,<7,12>,<7,71>)
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(185,59,<8,12>,<8,71>)
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(388,59,<15,12>,<15,71>)
+-------------------------
+28
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(695,228,<29,37>,<38,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(906,228,<40,37>,<49,5>)
+-------------------------
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(706,210,<30,8>,<37,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(917,210,<41,8>,<48,9>)
+-------------------------
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(921,19,<41,12>,<41,31>)
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(719,19,<32,12>,<32,31>)
+name: equals, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(710,19,<30,12>,<30,31>)
+-------------------------
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(778,138,<32,15>,<37,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(989,138,<43,15>,<48,9>)
+-------------------------
+name: variable, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(282,28,<11,18>,<11,46>)
+name: variable, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(446,28,<18,18>,<18,46>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(464,45,<16,15>,<18,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(261,45,<8,15>,<10,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(617,37,<25,36>,<27,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(261,45,<9,15>,<11,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(465,45,<18,15>,<20,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(618,37,<27,36>,<29,5>)
 -------------------------
 name: variables, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
 name: variables, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(436,39,<18,8>,<18,47>)
 -------------------------
-name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(114,201,<5,4>,<12,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(952,276,<40,25>,<48,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1163,276,<51,25>,<59,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1184,75,<52,18>,<54,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1357,75,<56,15>,<58,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1065,75,<43,26>,<45,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1146,75,<45,15>,<47,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(973,75,<41,18>,<43,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1276,75,<54,26>,<56,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(850,66,<34,15>,<37,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1061,66,<45,15>,<48,9>)
+-------------------------
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(931,297,<40,4>,<48,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1142,297,<51,4>,<59,5>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(373,85,<14,24>,<16,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(170,85,<6,24>,<8,9>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(170,85,<7,24>,<9,9>)
+-------------------------
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1054,167,<43,15>,<47,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1265,167,<54,15>,<58,9>)
+-------------------------
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(346,170,<13,29>,<19,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(141,172,<5,32>,<12,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(143,170,<5,33>,<11,5>)
+-------------------------
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(154,152,<6,8>,<10,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(154,152,<7,8>,<11,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(357,152,<14,8>,<18,9>)
+-------------------------
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(585,69,<25,4>,<27,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(586,69,<27,4>,<29,5>)
+-------------------------
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(524,53,<21,4>,<23,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(525,53,<23,4>,<25,5>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,49,<44,12>,<44,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,49,<57,12>,<57,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,49,<55,12>,<55,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,49,<53,12>,<53,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,49,<46,12>,<46,61>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,49,<42,12>,<42,61>)
+-------------------------
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1080,48,<44,12>,<44,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1372,48,<57,12>,<57,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1199,48,<53,12>,<53,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1161,48,<46,12>,<46,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1291,48,<55,12>,<55,60>)
+name: methodCall, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(988,48,<42,12>,<42,60>)
+-------------------------
 name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(113,200,<5,4>,<12,5>)
+name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(114,199,<5,4>,<11,5>)
 -------------------------
-name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
 name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(436,39,<18,8>,<18,47>)
+name: declarationStatement, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(272,39,<11,8>,<11,47>)
 -------------------------
-name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(980,75,<43,18>,<45,9>)
-name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1072,75,<45,26>,<47,9>)
-name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1153,75,<47,15>,<49,9>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,18,<10,12>,<10,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,18,<9,12>,<9,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,18,<17,12>,<17,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,18,<19,12>,<19,30>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,18,<26,8>,<26,26>)
+name: assignment, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,18,<28,8>,<28,26>)
+-------------------------
+name: less, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(993,18,<43,19>,<43,37>)
+name: less, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(782,18,<32,19>,<32,37>)
+-------------------------
+name: field, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTest.java|(197,18,<7,4>,<7,22>)
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(88,18,<3,4>,<3,22>)
+name: field, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(87,18,<3,4>,<3,22>)
+-------------------------
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(629,19,<28,8>,<28,27>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(479,19,<17,12>,<17,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(276,19,<9,12>,<9,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(480,19,<19,12>,<19,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(276,19,<10,12>,<10,31>)
+name: expressionStatement, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(628,19,<26,8>,<26,27>)
+-------------------------
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(1174,258,<52,8>,<58,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(963,258,<41,8>,<47,9>)
+-------------------------
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(838,296,<39,4>,<49,5>)
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(662,261,<29,4>,<38,5>)
+-------------------------
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(185,59,<7,12>,<7,71>)
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass.java|(185,59,<8,12>,<8,71>)
+name: throw, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(388,59,<15,12>,<15,71>)
 -------------------------
