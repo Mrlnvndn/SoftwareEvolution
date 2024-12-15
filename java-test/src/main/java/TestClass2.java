@@ -8,24 +8,31 @@ public class TestClass2 {
         } else {
             this.value = value;
         }
+        int randomValue = (int) (Math.random() * 50);
+        String randomString = "Random value: " + randomValue;
+        for (int i = 0; i < 5; i++) {
+            System.out.println(randomString);
+        }
+        double anotherRandomValue = Math.random() * 5;
+        String anotherRandomString = "Another random value: " + anotherRandomValue;
+        System.out.println(anotherRandomString);
     }
 
-    // altough it throws a different error, it should still be marked as code clone
-    // together with f in testClass
     public void f(int value) {
         if (value == 0) {
-            throw new ArithmeticException("Value cannot be zero");
+            throw new IllegalArgumentException("Value cannot be zero");
         } else {
             this.value = value;
         }
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue2(int value) {
-        this.value = value;
+        int randomValue = (int) (Math.random() * 12);
+        String randomString = "Random value: " + randomValue;
+        for (int i = 0; i < 5; i++) {
+            System.out.println(randomString);
+        }
+        // This variable initialization has been changed after copying
+        double anotherRandomValue = Math.random();
+        String anotherRandomString = "Another random value: " + anotherRandomValue;
+        System.out.println(anotherRandomString);
     }
 
     public String compare(int value) {
@@ -34,19 +41,9 @@ public class TestClass2 {
         } else if (this.value < value) {
             return "larger";
         } else {
-            test2();
+            TestClass1 tc1 = new TestClass1(3);
+            tc1.test1();
             return "smaller";
-        }
-    }
-
-    public void test2() {
-        double randomValue = Math.random();
-        if (randomValue < 0.33) {
-            System.out.println("This will be printed 30% of the time");
-        } else if (randomValue < 0.66) {
-            System.out.println("This will be printed 30% of the time");
-        } else {
-            System.out.println("This will be printed 30% of the time");
         }
     }
 }

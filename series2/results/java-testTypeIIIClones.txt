@@ -1,0 +1,18 @@
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(143,576,<5,33>,<19,5>) 
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(874,572,<23,29>,<37,5>) 
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(143,575,<5,33>,<19,5>) 
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(751,585,<21,29>,<35,5>) 
+------------------------- 
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(3229,1281,<91,4>,<116,5>) 
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(1960,1261,<65,4>,<89,5>) 
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(4518,1281,<118,4>,<143,5>) 
+------------------------- 
+name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(114,605,<5,4>,<19,5>) 
+name: constructor, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(114,604,<5,4>,<19,5>) 
+------------------------- 
+name: method, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTests.java|(377,210,<15,4>,<21,5>) 
+name: method, loc: |java+compilationUnit:///../java-test/src/test/java/TestClassTests.java|(224,145,<9,4>,<13,5>) 
+------------------------- 
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(727,719,<21,4>,<37,5>) 
+name: method, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(726,610,<21,4>,<35,5>) 
+------------------------- 

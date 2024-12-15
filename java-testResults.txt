@@ -1,0 +1,42 @@
+massThreshold: 20
+ignoreSubtreeThreshold: 15
+similarityThreshold: 0.8
+start time java-test: $2024-12-15T20:56:17.989+00:00$
+java-test
+subclone removal started now: $2024-12-15T20:56:31.075+00:00$
+subclone removal finished: $2024-12-15T20:56:31.080+00:00$
+Duplicate line Percentage: 22
+Biggest clone # lines: 16
+Number of clone classes: 3
+number of clones: 8
+Biggest clone class:
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(4190,313,<109,15>,<115,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(5459,313,<135,15>,<141,9>)
+name: if, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(2901,313,<82,15>,<88,9>)
+-------------------------
+subclone removal started now: $2024-12-15T20:56:31.246+00:00$
+subclone removal finished: $2024-12-15T20:56:31.250+00:00$
+Duplicate line Percentage: 34
+Biggest clone # lines: 16
+Number of clone classes: 4
+number of clones: 11
+Biggest clone class:
+name: for, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(1165,87,<31,8>,<33,9>)
+name: for, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(434,86,<13,8>,<15,9>)
+name: for, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(434,87,<13,8>,<15,9>)
+name: for, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(1042,87,<29,8>,<31,9>)
+-------------------------
+Number of bins: 79
+subclone removal started now: $2024-12-15T20:56:31.516+00:00$
+subclone removal finished: $2024-12-15T20:56:31.523+00:00$
+Duplicate line Percentage: 69
+Biggest clone # lines: 26
+Number of clone classes: 5
+number of clones: 13
+Biggest clone class:
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(143,576,<5,33>,<19,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass2.java|(874,572,<23,29>,<37,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(143,575,<5,33>,<19,5>)
+name: block, loc: |java+compilationUnit:///../java-test/src/main/java/TestClass1.java|(751,585,<21,29>,<35,5>)
+-------------------------
+end time java-test: $2024-12-15T20:56:31.546+00:00$
