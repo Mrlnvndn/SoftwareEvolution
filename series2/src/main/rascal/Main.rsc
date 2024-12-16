@@ -21,7 +21,7 @@ loc outputFile = |cwd:///output.txt|;
 //Parameters
 int massThreshold = 20;
 int ignoreSubtreeThreshold = 15;
-real similarityThreshold = 0.8;
+real similarityThreshold = 0.9;
 
 //For type II and III, key: node (subtree) hash, value: node (subtree)
 map[int, set[node]] nodeHashMap = ();
@@ -34,12 +34,12 @@ void main() {
     println("massThreshold: <massThreshold>");
     println("ignoreSubtreeThreshold: <ignoreSubtreeThreshold>");
     println("similarityThreshold: <similarityThreshold>");
-    
-    // evaluateProjectCodeDuplication("java-test", testProject);
+
+    evaluateProjectCodeDuplication("java-test", testProject);
 
     evaluateProjectCodeDuplication("smallsql", smallProject);
 
-    // evaluateProjectCodeDuplication("hsqldb", largeProject);
+    evaluateProjectCodeDuplication("hsqldb", largeProject);
 }
 
 void evaluateProjectCodeDuplication(str projectName, loc projectLocation){
@@ -183,7 +183,6 @@ list[set[node]] getTypeIIClones(list[Declaration] asts){
 }
 
 list[set[node]] removeSubClones(list[set[node]] clones) {
-    println("subclone removal started now: <now()>");
 
     // Sort clones by size in descending order to prioritize larger clones
     list[set[node]] sortedClones = sort(clones, bool(set[node] a, set[node] b) { return (size(a) > size(b)); });
@@ -221,7 +220,6 @@ list[set[node]] removeSubClones(list[set[node]] clones) {
     // Filter out the clones marked for removal
     list[set[node]] filteredClones = [c | set[node] c <- sortedClones, (c notin clonesToRemove)];
 
-    println("subclone removal finished: <now()>");
     return filteredClones;
 }
 
@@ -249,7 +247,6 @@ loc getLoc(node n){
 
 list[set[node]] getTypeIIIClones(list[Declaration] asts){
     list[set[node]] cloneClasses = [];
-    map[node,set[node]] nodeSimilarityGraph = ();
 
     list[set[node]] binClonePairs = [];
     for(Declaration ast <- asts){
@@ -262,6 +259,7 @@ list[set[node]] getTypeIIIClones(list[Declaration] asts){
     for(set[node] binSet <- range(nodeHashMap)){
         list[node] binList = toList(binSet);
         binClonePairs = [];
+        map[node,set[node]] nodeSimilarityGraph = ();
         for(int i <- [0 .. (size(binList) -1)]){
             node n1 = binList[i];
             for (int j <- [i+1 .. size(binList)]){
@@ -273,9 +271,11 @@ list[set[node]] getTypeIIIClones(list[Declaration] asts){
                 }
             }
         }
+        if(size(nodeSimilarityGraph) > 0){
+            cloneClasses += findMaximalCliques(nodeSimilarityGraph);
+        }
     }
 
-    cloneClasses = findMaximalCliques(nodeSimilarityGraph);
     return removeSubClones(cloneClasses);
 }
 
@@ -439,50 +439,6 @@ void printClones(list[set[node]] cloneGroups){
     }
 }
 
-bool deepEquals(node node1, node node2){
-
-    //compare two subtrees toroughly. getName gets the type (methodCall, Class, method)
-    if (getName(node1) == getName(node2)){
-        list[value] properties1 = getProperties(node1);
-        list[value] properties2 = getProperties(node2);
-
-        if (size(properties1) != size(properties2)) {
-            return false;
-        }
-
-        for (int i <- [0 .. size(properties1)]) {
-            if (properties1[i] != properties2[i]) {
-                return false;
-            }
-        }
-    }
-    if (getName(node1) != getName(node2)) {
-        return false;
-    }
-
-    list[node] children1 = [ child | node child <- getChildren(node1)];
-    list[node] children2 = [ child | node child <- getChildren(node2)];
-
-    if (size(children1) != size(children2)) {
-        return false;
-    }
-
-    for (int i <- [0 .. size(children1)]) {
-        value child1 = children1[i];
-        for (int j <- [0 .. size(children1)]){
-            value child2 = children2[j];
-            if(!deepEquals(child1, child2)){
-                return false;
-            }
-        }
-    }
-
-    return true;
-
-}
-
-
-//Deprecated
 set[node] collectNodes(node tree) {
 
     set[node] nodes = {};

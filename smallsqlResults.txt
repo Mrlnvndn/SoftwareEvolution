@@ -1,0 +1,85 @@
+massThreshold: 20
+ignoreSubtreeThreshold: 15
+similarityThreshold: 0.8
+start time smallsql: $2024-12-15T20:58:12.904+00:00$
+smallsql
+subclone removal started now: $2024-12-15T20:58:56.830+00:00$
+subclone removal finished: $2024-12-15T20:58:57.399+00:00$
+Duplicate line Percentage: 1
+Biggest clone # lines: 29
+Number of clone classes: 54
+number of clones: 123
+Biggest clone class:
+name: block, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/TestTransactions.java|(4437,153,<129,10>,<134,3>)
+name: block, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/TestTransactions.java|(9935,153,<281,10>,<286,3>)
+name: block, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/TestTransactions.java|(13685,153,<365,10>,<370,3>)
+name: block, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/TestTransactions.java|(6488,153,<188,10>,<193,3>)
+name: block, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/TestTransactions.java|(5420,153,<157,10>,<162,3>)
+name: block, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/TestTransactions.java|(3374,153,<98,10>,<103,3>)
+-------------------------
+subclone removal started now: $2024-12-15T20:59:20.730+00:00$
+subclone removal finished: $2024-12-15T20:59:22.884+00:00$
+Duplicate line Percentage: 8
+Biggest clone # lines: 64
+Number of clone classes: 155
+number of clones: 427
+Biggest clone class:
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(19634,148,<585,4>,<587,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSCallableStatement.java|(10750,130,<261,4>,<263,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSCallableStatement.java|(12611,133,<300,4>,<302,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSCallableStatement.java|(12184,139,<291,4>,<293,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSCallableStatement.java|(13618,139,<318,4>,<320,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(20342,145,<600,4>,<602,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSCallableStatement.java|(12472,133,<297,4>,<299,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(20206,130,<597,4>,<599,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(20070,130,<594,4>,<596,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSCallableStatement.java|(12750,148,<303,4>,<305,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(19788,136,<588,4>,<590,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(21189,136,<615,4>,<617,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(28311,127,<841,4>,<843,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(28704,130,<852,4>,<854,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(29100,130,<863,4>,<865,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSResultSet.java|(29500,133,<874,4>,<876,5>)
+name: method, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSCallableStatement.java|(12027,151,<288,4>,<290,5>)
+-------------------------
+Number of bins: 5741
+subclone removal started now: $2024-12-15T21:26:50.759+00:00$
+subclone removal finished: $2024-12-15T21:27:03.521+00:00$
+Duplicate line Percentage: 30
+Biggest clone # lines: 135
+Number of clone classes: 663
+number of clones: 2807
+Biggest clone class:
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(25293,379,<845,3>,<845,382>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(28301,351,<853,3>,<853,354>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(23142,345,<839,3>,<839,348>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(26053,369,<847,3>,<847,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(31137,337,<861,3>,<861,340>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(30785,346,<860,3>,<860,349>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(22787,349,<838,3>,<838,352>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(31480,341,<862,3>,<862,344>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(20932,370,<833,3>,<833,373>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(28658,351,<854,3>,<854,354>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(29731,334,<857,3>,<857,337>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(23847,348,<841,3>,<841,351>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(29015,369,<855,3>,<855,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(23493,348,<840,3>,<840,351>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(22433,348,<837,3>,<837,351>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(29390,335,<856,3>,<856,338>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(24201,347,<842,3>,<842,350>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(31827,342,<863,3>,<863,345>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(30435,344,<859,3>,<859,347>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(24554,348,<843,3>,<843,351>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(24908,379,<844,3>,<844,382>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(30071,358,<858,3>,<858,361>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(27178,369,<850,3>,<850,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(27553,366,<851,3>,<851,369>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(25678,369,<846,3>,<846,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(26428,369,<848,3>,<848,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(21683,369,<835,3>,<835,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(26803,369,<849,3>,<849,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(21308,369,<834,3>,<834,372>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(27925,370,<852,3>,<852,373>)
+name: arrayInitializer, loc: |java+compilationUnit:///../smallsql0.21_src/smallsql0.21_src/src/smallsql/database/SSDatabaseMetaData.java|(22058,369,<836,3>,<836,372>)
+-------------------------
+end time smallsql: $2024-12-15T21:27:06.735+00:00$

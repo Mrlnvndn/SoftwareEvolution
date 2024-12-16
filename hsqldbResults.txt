@@ -1,0 +1,25 @@
+massThreshold: 20
+ignoreSubtreeThreshold: 15
+similarityThreshold: 0.9
+start time hsqldb: $2024-12-15T21:39:35.194+00:00$
+hsqldb
+Duplicate line Percentage: 4
+Biggest clone # lines: 73
+Number of clone classes: 607
+number of clones: 1535
+Biggest clone class: 41
+-------------------------
+Duplicate line Percentage: 10
+Biggest clone # lines: 79
+Number of clone classes: 1247
+number of clones: 3416
+Biggest clone class: 42
+-------------------------
+numberOfBins: 36875
+Duplicate line Percentage: 35
+Biggest clone # lines: 163
+Number of clone classes: 5301
+number of clones: 12073
+Biggest clone class: 45
+-------------------------
+end time hsqldb: $2024-12-15T22:25:19.391+00:00$
